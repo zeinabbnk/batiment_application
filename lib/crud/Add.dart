@@ -38,7 +38,7 @@ class _AddCmtState extends State<AddCmt> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF1C6758),
+        backgroundColor: Color(0xFFBAD7E9),
         title: Text(
           "Add Document",
           style: TextStyle(fontSize: 26, color: Color(0xFFF6F1F1)),
@@ -56,138 +56,139 @@ class _AddCmtState extends State<AddCmt> {
               color: Color(0xFFF6F1F1))
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _photo != null
-              ? Image.file(
-                  _photo!,
-                  width: 250,
-                  height: 250,
-                  fit: BoxFit.cover,
-                )
-              : Image.asset(
-                  "images/4.png",
-                  height: 170,
-                  width: 300,
-                  color: Color(0xFF394867),
-                ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  GetImage();
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.camera, color: Color(0xFFF6F1F1)),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "Camera",
-                      style: TextStyle(
-                          color: Color(0xFFF6F1F1),
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF1C6758),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  elevation: 8,
-                ),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              ElevatedButton(
+      body: Container(
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            _photo != null
+                ? Image.file(
+                    _photo!,
+                    width: 250,
+                    height: 250,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    "images/4.png",
+                    height: 150,
+                    width: 200,
+                    color: Color(0xFF2B3467),
+                  ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 100),
+              alignment: Alignment.center,
+              child: ElevatedButton(
                 onPressed: () {
                   PhotoPick();
                 },
                 child: Row(
                   children: [
-                    Icon(Icons.image_outlined, color: Color(0xFFF6F1F1)),
+                    Icon(
+                      Icons.upload_file_outlined,
+                      color: Color(0xFF2B3467),
+                      size: 25,
+                    ),
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Gallery",
-                        style: TextStyle(
-                            color: Color(0xFFF6F1F1),
-                            fontWeight: FontWeight.bold)),
+                    Text(
+                      "Upload Maquette",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2B3467)),
+                    )
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF1C6758),
+                  primary: Color(0xFFEB455F),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  elevation: 8,
-                ),
-              )
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.all(10),
-            child: TextField(
-              minLines: 1,
-              maxLines: 20,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Color(0xFFF1F6F9),
-                prefixIcon: Icon(
-                  Icons.note_add_outlined,
-                  color: Color(0xFF394867),
-                ),
-                labelText: "Commentaire :",
-                labelStyle: TextStyle(
-                    fontSize: 15,
-                    color: Color(0xFF394867),
-                    fontWeight: FontWeight.bold),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    20,
-                  ),
-                  borderSide: BorderSide(color: Color(0xFF394867), width: 2),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    20,
-                  ),
-                  borderSide: BorderSide(color: Color(0xFF394867), width: 2),
                 ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            width: 190,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFF1C6758),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                elevation: 8,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.note_add_outlined, color: Color(0xFFF6F1F1)),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "Add Comment",
-                    style: TextStyle(
-                        color: Color(0xFFF6F1F1), fontWeight: FontWeight.bold),
-                  ),
-                ],
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              child: TextField(
+                cursorColor: Color(0xFFBAD7E9),
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintMaxLines: 1,
+                  labelText: "Numéro d'étage",
+                  labelStyle: TextStyle(
+                      color: Color(0xFF2B3467), fontWeight: FontWeight.bold),
+                  prefixIcon: Icon(Icons.roofing, color: Color(0xFF2B3467)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          BorderSide(color: Color(0xFFBAD7E9), width: 3)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          BorderSide(color: Color(0xFFBAD7E9), width: 3)),
+                ),
               ),
             ),
-          ),
-        ],
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15),
+              child: TextField(
+                cursorColor: Color(0xFFBAD7E9),
+                decoration: InputDecoration(
+                  hintMaxLines: 1,
+                  labelText: "Titre",
+                  labelStyle: TextStyle(
+                      color: Color(0xFF2B3467), fontWeight: FontWeight.bold),
+                  prefixIcon: Icon(Icons.title, color: Color(0xFF2B3467)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          BorderSide(color: Color(0xFFBAD7E9), width: 3)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          BorderSide(color: Color(0xFFBAD7E9), width: 3)),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 120),
+              alignment: Alignment.center,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.skip_next,
+                      color: Color(0xFF2B3467),
+                      size: 25,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Suivant",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2B3467)),
+                    )
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFEB455F),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
