@@ -12,20 +12,25 @@ class _infoHomeState extends State<infoHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        alignment: Alignment.center,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Entrer les Informations de la Maison:",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFEB455F)),
+          children: const [
+            Text("Enter les Informations "),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "adress ",
+                icon: Icon(Icons.location_city),
+              ),
             ),
             TextField(
               decoration: InputDecoration(
-                labelText: "Adresse",
+                labelText: "Type de Batiment ",
+                icon: Icon(Icons.house),
+              ),
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Nombre d etages ",
+                icon: Icon(Icons.stairs),
               ),
             ),
           ],
