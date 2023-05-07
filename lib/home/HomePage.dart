@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
               shadowColor: Colors.blueGrey,
               child: ListTile(
                 title: Text(
-                  "Profil",
+                  "Informations Maison",
                   style: TextStyle(
                       fontSize: 18,
                       color: Color(0xFF394867),
@@ -115,7 +115,9 @@ class _HomePageState extends State<HomePage> {
                   size: 28,
                   color: Color(0xFF394867),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushNamed("infohome");
+                },
               ),
             ),
             SizedBox(
