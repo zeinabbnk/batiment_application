@@ -23,6 +23,7 @@ class _infoHomeState extends State<infoHome> {
               size: 33,  
             ),
             SizedBox(width: 10,),
+            
             Text(
               "House Informations",
               style: TextStyle(
