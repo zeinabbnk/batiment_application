@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         "login": (context) => LogIn(),
         "signup": (context) => SignUp(),
         "homepage": (context) => HomePage(),
-        "addcommentaire": (context) => AddCmt(),
+        "addMaquette": (context) => AddMqt(),
         "infohome" :(context) => infoHome(),
       },
     );

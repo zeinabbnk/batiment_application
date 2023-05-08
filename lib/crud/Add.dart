@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
-class AddCmt extends StatefulWidget {
-  const AddCmt({super.key});
+class AddMqt extends StatefulWidget {
+  const AddMqt({super.key});
 
   @override
-  State<AddCmt> createState() => _AddCmtState();
+  State<AddMqt> createState() => _AddMqtState();
 }
 
-class _AddCmtState extends State<AddCmt> {
+class _AddMqtState extends State<AddMqt> {
   File? _photo;
 
   GetImage() async {
