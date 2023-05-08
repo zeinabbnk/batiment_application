@@ -69,7 +69,7 @@ class _AddCmtState extends State<AddCmt> {
                   )
                 : Image.asset(
                     "images/4.png",
-                    height: 150,
+                    height: 120,
                     width: 200,
                     color: Color(0xFF2B3467),
                   ),
