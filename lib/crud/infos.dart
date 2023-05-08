@@ -15,20 +15,20 @@ class _infoHomeState extends State<infoHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF2B3467),
+        backgroundColor: Color(0xFFBAD7E9),
         title: Row(
           children: [
             Icon(
               Icons.insert_drive_file_outlined,
-              size: 33,
-              color: Color(0xFFFCFFE7),
+              size: 33,  
             ),
+            SizedBox(width: 10,),
             Text(
               "House Informations",
               style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFFFCFFE7)),
+                 ),
             )
           ],
         ),
