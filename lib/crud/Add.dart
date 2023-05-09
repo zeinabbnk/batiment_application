@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
-class AddCmt extends StatefulWidget {
-  const AddCmt({super.key});
+class AddMqt extends StatefulWidget {
+  const AddMqt({super.key});
 
   @override
-  State<AddCmt> createState() => _AddCmtState();
+  State<AddMqt> createState() => _AddMqtState();
 }
 
-class _AddCmtState extends State<AddCmt> {
+class _AddMqtState extends State<AddMqt> {
   File? _photo;
 
   GetImage() async {
@@ -40,7 +40,7 @@ class _AddCmtState extends State<AddCmt> {
       appBar: AppBar(
         backgroundColor: Color(0xFFBAD7E9),
         title: Text(
-          "Add Document",
+          "Add Maquette",
           style: TextStyle(fontSize: 26, color: Color(0xFFF6F1F1)),
         ),
         centerTitle: true,
@@ -159,7 +159,9 @@ class _AddCmtState extends State<AddCmt> {
               margin: EdgeInsets.symmetric(horizontal: 120),
               alignment: Alignment.center,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed("addPhoto");
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
