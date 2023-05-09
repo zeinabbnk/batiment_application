@@ -125,7 +125,7 @@ class _infoHomeState extends State<infoHome> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed("addMaquett");
+                  Navigator.of(context).pushNamed("addMaquette");
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

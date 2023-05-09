@@ -40,7 +40,7 @@ class _AddMqtState extends State<AddMqt> {
       appBar: AppBar(
         backgroundColor: Color(0xFFBAD7E9),
         title: Text(
-          "Add Document",
+          "Add Maquette",
           style: TextStyle(fontSize: 26, color: Color(0xFFF6F1F1)),
         ),
         centerTitle: true,
@@ -159,7 +159,9 @@ class _AddMqtState extends State<AddMqt> {
               margin: EdgeInsets.symmetric(horizontal: 120),
               alignment: Alignment.center,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed("addPhoto");
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
