@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -17,15 +19,30 @@ class AddPhoto extends StatefulWidget {
 class _AddPhotoState extends State<AddPhoto> {
 //fonction pour prendre les photos
   File? _photo;
-
+//take photo function
   GetImage() async {
-    // ignore: deprecated_member_use
-    final photo = await ImagePicker().getImage(source: ImageSource.camera);
-    if (photo == null) return;
+    try {
+      final photo = await ImagePicker().getImage(source: ImageSource.camera);
+      if (photo == null) return;
 
-    setState(() {
-      this._photo = File(photo.path);
-    });
+      final photoPermanent = await saveImage(photo.path);
+
+      setState(() {
+        this._photo = photoPermanent;
+      });
+    } on PlatformException catch (e) {
+      print('failed to pick image : $e');
+    }
+    // ignore: deprecated_member_use
+  }
+
+  //save photo function
+
+  Future<File> saveImage(String imagePath) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final name = basename(imagePath);
+    final image = File('${directory.path}/$name');
+    return File(imagePath).copy(image.path);
   }
 
 //fonctions pour enregister audio
