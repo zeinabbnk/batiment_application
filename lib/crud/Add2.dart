@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+
 class AddPhoto extends StatefulWidget {
   const AddPhoto({super.key});
 
@@ -14,6 +15,7 @@ class AddPhoto extends StatefulWidget {
 }
 
 class _AddPhotoState extends State<AddPhoto> {
+//fonction pour prendre les photos
   File? _photo;
 
   GetImage() async {
@@ -26,6 +28,7 @@ class _AddPhotoState extends State<AddPhoto> {
     });
   }
 
+//fonctions pour enregister audio
   @override
   void initState() {
     initRecord();
@@ -39,6 +42,7 @@ class _AddPhotoState extends State<AddPhoto> {
   }
 
   final recorder = FlutterSoundRecorder();
+  bool isRecorderReady = false;
 
   // microphone access
   Future initRecord() async {
@@ -47,6 +51,8 @@ class _AddPhotoState extends State<AddPhoto> {
       throw 'Permission not granted';
     }
     await recorder.openRecorder();
+
+    isRecorderReady = true;
     recorder.setSubscriptionDuration(const Duration(milliseconds: 500));
   }
 
