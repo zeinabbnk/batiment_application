@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:audioplayers/audioplayers.dart';
 
 class AddPhoto extends StatefulWidget {
   const AddPhoto({super.key});
@@ -41,8 +41,24 @@ class _AddPhotoState extends State<AddPhoto> {
     super.dispose();
   }
 
+//recording/playing audio Variable
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
+
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Duration durationS = Duration.zero;
+  Duration position = Duration.zero;
+
+//formatTime
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return [if (duration.inHours > 0) hours, minutes, seconds].join(':');
+  }
 
   // microphone access
   Future initRecord() async {
@@ -93,6 +109,7 @@ class _AddPhotoState extends State<AddPhoto> {
         margin: EdgeInsets.only(top: 30),
         alignment: Alignment.center,
         child: Column(children: [
+          //taking Photo
           _photo != null
               ? Image.file(
                   _photo!,
@@ -145,6 +162,7 @@ class _AddPhotoState extends State<AddPhoto> {
           SizedBox(
             height: 30,
           ),
+          //Recording Audio
           //recording timer
           StreamBuilder<RecordingDisposition>(
             builder: (context, snapshot) {
@@ -171,43 +189,103 @@ class _AddPhotoState extends State<AddPhoto> {
           SizedBox(
             height: 20,
           ),
-          Container(
-            width: 200,
-            height: 85,
-            padding: EdgeInsets.all(20),
-            child: ElevatedButton(
-              onPressed: () async {
-                if (recorder.isRecording) {
-                  await stopRecord();
-                  setState(() {});
-                } else {
-                  await starRecorder();
-                  setState(() {});
-                }
-              },
-              child:
-                  //record Button
-                  Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(recorder.isRecording ? Icons.stop : Icons.mic_outlined,
-                      size: 28, color: Color(0xFF2B3467)),
-                  SizedBox(
-                    width: 10,
+          Row(
+            children: [
+              Container(
+                width: 180,
+                height: 85,
+                padding: EdgeInsets.all(20),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (recorder.isRecording) {
+                      await stopRecord();
+                      setState(() {});
+                    } else {
+                      await starRecorder();
+                      setState(() {});
+                    }
+                  },
+                  child:
+                      //record Button
+                      Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                          recorder.isRecording
+                              ? Icons.stop
+                              : Icons.mic_outlined,
+                          size: 28,
+                          color: Color(0xFF2B3467)),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        recorder.isRecording ? "Stop" : "Record",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2B3467)),
+                      )
+                    ],
                   ),
-                  Text(
-                    recorder.isRecording ? "Stop" : "Record",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF2B3467)),
-                  )
-                ],
+                  style: ElevatedButton.styleFrom(
+                      primary: Color(0xFFDBDFEA),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                ),
               ),
-              style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFDBDFEA),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10))),
+              //playing Audio Button
+              Container(
+                width: 180,
+                height: 85,
+                padding: EdgeInsets.all(20),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    //  if (isPlaying) {
+                    //    await audioPlayer.pause();
+                    //  } else {
+                    //
+                    //  }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.play_arrow,
+                          size: 28, color: Color(0xFF2B3467)),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Play",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2B3467)),
+                      )
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      primary: Color(0xFFDBDFEA),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                ),
+              )
+            ],
+          ),
+          Slider(
+            min: 0,
+            max: durationS.inSeconds.toDouble(),
+            value: position.inSeconds.toDouble(),
+            onChanged: (value) async {},
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(formatTime(position)),
+                Text(formatTime(durationS - position)),
+              ],
             ),
           )
         ]),
