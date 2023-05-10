@@ -27,6 +27,41 @@ class _AddPhotoState extends State<AddPhoto> {
   }
 
   @override
+  void initState() {
+    initRecord();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    recorder.closeRecorder();
+    super.dispose();
+  }
+
+  final recorder = FlutterSoundRecorder();
+
+  // microphone access
+  Future initRecord() async {
+    final status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw 'Permission not granted';
+    }
+    await recorder.openRecorder();
+    recorder.setSubscriptionDuration(const Duration(milliseconds: 500));
+  }
+
+  //2 functions for starting record an stop
+  Future starRecorder() async {
+    await recorder.startRecorder(toFile: 'audio');
+  }
+
+  Future stopRecord() async {
+    final filePath = await recorder.stopRecorder();
+    final file = File(filePath!);
+    print('Recorder file path is : $file');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -101,6 +136,74 @@ class _AddPhotoState extends State<AddPhoto> {
               ),
             ),
           ),
+          SizedBox(
+            height: 30,
+          ),
+          //recording timer
+          StreamBuilder<RecordingDisposition>(
+            builder: (context, snapshot) {
+              final duration =
+                  snapshot.hasData ? snapshot.data!.duration : Duration.zero;
+
+              String twoDigits(int n) => n.toString().padLeft(2, '0');
+              final twoDigitsMinites =
+                  twoDigits(duration.inMinutes.remainder(60));
+              final twoDigitsSeconds =
+                  twoDigits(duration.inSeconds.remainder(60));
+
+              return Text(
+                "$twoDigitsMinites : $twoDigitsSeconds",
+                style: TextStyle(
+                    color: Color(0xFF2B3467),
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold),
+              );
+            },
+            //updating the recording
+            stream: recorder.onProgress,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            width: 200,
+            height: 85,
+            padding: EdgeInsets.all(20),
+            child: ElevatedButton(
+              onPressed: () async {
+                if (recorder.isRecording) {
+                  await stopRecord();
+                  setState(() {});
+                } else {
+                  await starRecorder();
+                  setState(() {});
+                }
+              },
+              child:
+                  //record Button
+                  Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(recorder.isRecording ? Icons.stop : Icons.mic_outlined,
+                      size: 28, color: Color(0xFF2B3467)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    recorder.isRecording ? "Stop" : "Record",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2B3467)),
+                  )
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFDBDFEA),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+            ),
+          )
         ]),
       ),
     );
