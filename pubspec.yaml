@@ -41,9 +41,8 @@ dependencies:
   flutter_sound: ^9.2.13
   permission_handler: ^10.2.0
   audioplayers: ^4.0.1
-  
-  
-
+  assets_audio_player: ^3.0.6
+  mic_stream: ^0.6.5
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
