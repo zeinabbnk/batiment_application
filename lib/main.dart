@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
         "signup": (context) => SignUp(),
         "homepage": (context) => HomePage(),
         "addMaquette": (context) => AddMqt(),
-        "infohome" :(context) => infoHome(),
-        "addPhoto":(context) => AddPhoto(),
+        "infohome": (context) => infoHome(),
+        "addPhoto": (context) => AddPhoto(),
       },
     );
   }

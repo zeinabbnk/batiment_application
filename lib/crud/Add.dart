@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AddMqt extends StatefulWidget {
   const AddMqt({super.key});
@@ -13,16 +14,6 @@ class AddMqt extends StatefulWidget {
 
 class _AddMqtState extends State<AddMqt> {
   File? _photo;
-
-  GetImage() async {
-    // ignore: deprecated_member_use
-    final photo = await ImagePicker().getImage(source: ImageSource.camera);
-    if (photo == null) return;
-
-    setState(() {
-      this._photo = File(photo.path);
-    });
-  }
 
   PhotoPick() async {
     final photo = await ImagePicker().pickImage(source: ImageSource.gallery);

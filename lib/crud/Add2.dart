@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -15,17 +18,33 @@ class AddPhoto extends StatefulWidget {
 }
 
 class _AddPhotoState extends State<AddPhoto> {
+  var SelectedPan = null;
 //fonction pour prendre les photos
   File? _photo;
-
+//take photo function
   GetImage() async {
-    // ignore: deprecated_member_use
-    final photo = await ImagePicker().getImage(source: ImageSource.camera);
-    if (photo == null) return;
+    try {
+      final photo = await ImagePicker().getImage(source: ImageSource.camera);
+      if (photo == null) return;
 
-    setState(() {
-      this._photo = File(photo.path);
-    });
+      final photoPermanent = await saveImage(photo.path);
+
+      setState(() {
+        this._photo = photoPermanent;
+      });
+    } on PlatformException catch (e) {
+      print('failed to pick image : $e');
+    }
+    // ignore: deprecated_member_use
+  }
+
+  //save photo function
+
+  Future<File> saveImage(String imagePath) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final name = basename(imagePath);
+    final image = File('${directory.path}/$name');
+    return File(imagePath).copy(image.path);
   }
 
 //fonctions pour enregister audio
@@ -45,7 +64,6 @@ class _AddPhotoState extends State<AddPhoto> {
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
 
-  final audioPlayer = AudioPlayer();
   bool isPlaying = false;
   Duration durationS = Duration.zero;
   Duration position = Duration.zero;
@@ -162,6 +180,53 @@ class _AddPhotoState extends State<AddPhoto> {
           SizedBox(
             height: 30,
           ),
+
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            child: DropdownSearch<String>(
+              popupProps: PopupProps.menu(
+                showSelectedItems: true,
+                disabledItemFn: (String s) => s.startsWith('I'),
+              ),
+              items: [
+                "Pannes électriques",
+                "Pannes de plomberie",
+                "Pannes de toiture ",
+                'Pannes de serrurerie',
+                "Problème de peinture",
+              ],
+              dropdownDecoratorProps: DropDownDecoratorProps(
+                dropdownSearchDecoration: InputDecoration(
+                  icon: Icon(
+                    Icons.house,
+                    color: Color(0xFF2B3467),
+                  ),
+                  labelText: "Type de Panne",
+                  labelStyle: TextStyle(
+                      color: Color(0xFF2B3467), fontWeight: FontWeight.bold),
+                  hintText: "Choisir le Type de panne",
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide:
+                          BorderSide(color: Color(0xFFBAD7E9), width: 3)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3),
+                  ),
+                ),
+              ),
+              onChanged: (val) {
+                setState(() {
+                  SelectedPan = val;
+                });
+              },
+              selectedItem: SelectedPan,
+            ),
+          ),
+
+          SizedBox(
+            height: 30,
+          ),
           //Recording Audio
           //recording timer
           StreamBuilder<RecordingDisposition>(
@@ -189,105 +254,45 @@ class _AddPhotoState extends State<AddPhoto> {
           SizedBox(
             height: 20,
           ),
-          Row(
-            children: [
-              Container(
-                width: 180,
-                height: 85,
-                padding: EdgeInsets.all(20),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (recorder.isRecording) {
-                      await stopRecord();
-                      setState(() {});
-                    } else {
-                      await starRecorder();
-                      setState(() {});
-                    }
-                  },
-                  child:
-                      //record Button
-                      Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                          recorder.isRecording
-                              ? Icons.stop
-                              : Icons.mic_outlined,
-                          size: 28,
-                          color: Color(0xFF2B3467)),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        recorder.isRecording ? "Stop" : "Record",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF2B3467)),
-                      )
-                    ],
+          Container(
+            width: 180,
+            height: 85,
+            padding: EdgeInsets.all(20),
+            child: ElevatedButton(
+              onPressed: () async {
+                if (recorder.isRecording) {
+                  await stopRecord();
+                  setState(() {});
+                } else {
+                  await starRecorder();
+                  setState(() {});
+                }
+              },
+              child:
+                  //record Button
+                  Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(recorder.isRecording ? Icons.stop : Icons.mic_outlined,
+                      size: 28, color: Color(0xFF2B3467)),
+                  SizedBox(
+                    width: 10,
                   ),
-                  style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFDBDFEA),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                ),
+                  Text(
+                    recorder.isRecording ? "Stop" : "Record",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2B3467)),
+                  )
+                ],
               ),
-              //playing Audio Button
-              Container(
-                width: 180,
-                height: 85,
-                padding: EdgeInsets.all(20),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    //  if (isPlaying) {
-                    //    await audioPlayer.pause();
-                    //  } else {
-                    //
-                    //  }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.play_arrow,
-                          size: 28, color: Color(0xFF2B3467)),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Play",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF2B3467)),
-                      )
-                    ],
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFDBDFEA),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                ),
-              )
-            ],
-          ),
-          Slider(
-            min: 0,
-            max: durationS.inSeconds.toDouble(),
-            value: position.inSeconds.toDouble(),
-            onChanged: (value) async {},
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(formatTime(position)),
-                Text(formatTime(durationS - position)),
-              ],
+              style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFDBDFEA),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
             ),
-          )
+          ),
         ]),
       ),
     );
