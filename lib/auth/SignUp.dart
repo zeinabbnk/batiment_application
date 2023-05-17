@@ -8,6 +8,29 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = '';
+  String _email = '';
+  String _password = '';
+  String _confirmPassword = '';
+
+  final emailController = TextEditingController();
+  final nameController = TextEditingController();
+  final passController = TextEditingController();
+  final passConfirmController = TextEditingController();
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      // Form is valid, process the data
+      _formKey.currentState!.save();
+      // Process the form data as per your requirements
+      print('Name: $_name');
+      print('Email: $_email');
+      print('Password: $_password');
+      print('Confirm Password: $_confirmPassword');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +51,7 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const ListTile(
+                ListTile(
                   title: Text(
                     "Create Your Account",
                     style: TextStyle(
@@ -46,91 +69,144 @@ class _SignUpState extends State<SignUp> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const TextField(
-                  decoration: InputDecoration(
-                      labelText: "User Name :",
-                      labelStyle: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF394867)),
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: Color(0xFF394867),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                            labelText: "User Name :",
+                            labelStyle: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF394867)),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Color(0xFF394867),
+                            ),
+                            hintText: "Enter_User_Name",
+                            hintStyle: TextStyle(
+                                fontSize: 12, color: Color(0xFFF6F1F1)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF394867), width: 3)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF394867), width: 3))),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your name';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _name = value!;
+                        },
                       ),
-                      hintText: "Enter_User_Name",
-                      hintStyle:
-                          TextStyle(fontSize: 12, color: Color(0xFFF6F1F1)),
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF394867), width: 3)),
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF394867), width: 3))),
-                ),
-                const TextField(
-                  decoration: InputDecoration(
-                      labelText: "Email :",
-                      labelStyle: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF394867)),
-                      prefixIcon: Icon(
-                        Icons.email_outlined,
-                        color: Color(0xFF394867),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            labelText: "Email :",
+                            labelStyle: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF394867)),
+                            prefixIcon: Icon(
+                              Icons.email_outlined,
+                              color: Color(0xFF394867),
+                            ),
+                            hintText: "Enter_Email",
+                            hintStyle: TextStyle(
+                                fontSize: 12, color: Color(0xFFF6F1F1)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF394867), width: 3)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF394867), width: 3))),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          bool emailValid = RegExp(
+                                  r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                              .hasMatch(value);
+                          if (!emailValid) {
+                            return "Enter Valid Email";
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _email = value!;
+                        },
                       ),
-                      hintText: "Enter_Email",
-                      hintStyle:
-                          TextStyle(fontSize: 12, color: Color(0xFFF6F1F1)),
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF394867), width: 3)),
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF394867), width: 3))),
-                ),
-                const TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      labelText: "Pass Word :",
-                      labelStyle: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF394867)),
-                      prefixIcon: Icon(
-                        Icons.password,
-                        color: Color(0xFF394867),
+                      TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            labelText: "Pass Word :",
+                            labelStyle: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF394867)),
+                            prefixIcon: Icon(
+                              Icons.password,
+                              color: Color(0xFF394867),
+                            ),
+                            hintText: "Enter_Pass_Word",
+                            hintStyle: TextStyle(
+                                fontSize: 12, color: Color(0xFFF6F1F1)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF394867), width: 3)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF394867), width: 3))),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a password';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _password = value!;
+                        },
                       ),
-                      hintText: "Enter_Pass_Word",
-                      hintStyle:
-                          TextStyle(fontSize: 12, color: Color(0xFFF6F1F1)),
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF394867), width: 3)),
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF394867), width: 3))),
-                ),
-                const TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      labelText: "Confirm Pass Word :",
-                      labelStyle: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF394867)),
-                      prefixIcon: Icon(
-                        Icons.password_outlined,
-                        color: Color(0xFF394867),
+                      TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            labelText: "Confirm Pass Word :",
+                            labelStyle: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF394867)),
+                            prefixIcon: Icon(
+                              Icons.password_outlined,
+                              color: Color(0xFF394867),
+                            ),
+                            hintText: "Confirm_Pass_Word",
+                            hintStyle: TextStyle(
+                                fontSize: 12, color: Color(0xFFF6F1F1)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF394867), width: 3)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF394867), width: 3))),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please confirm your password';
+                          }
+                          if (value != _password) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _confirmPassword = value!;
+                        },
                       ),
-                      hintText: "Confirm_Pass_Word",
-                      hintStyle:
-                          TextStyle(fontSize: 12, color: Color(0xFFF6F1F1)),
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF394867), width: 3)),
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF394867), width: 3))),
+                    ],
+                  ),
                 ),
                 Container(
                   child: Row(children: [
@@ -142,7 +218,7 @@ class _SignUpState extends State<SignUp> {
                       onTap: () {
                         Navigator.of(context).pushNamed("login");
                       },
-                      child: const Text(
+                      child: Text(
                         " Click here",
                         style: TextStyle(
                             color: Color(0xFF87CBB9),
@@ -154,7 +230,16 @@ class _SignUpState extends State<SignUp> {
                 ),
                 Container(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        print('Success');
+                        emailController.clear();
+                        nameController.clear();
+                        passController.clear();
+                        passConfirmController.clear();
+                      }
+                    }, //_submitForm,
                     child: Text(
                       "Sign Up",
                       style: TextStyle(
