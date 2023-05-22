@@ -63,6 +63,8 @@ class _AddPhotoState extends State<AddPhoto> {
 //recording/playing audio Variable
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
+  String? audioPath;
+  AudioPlayer audioPlayer = AudioPlayer();
 
   bool isPlaying = false;
   Duration durationS = Duration.zero;
@@ -100,6 +102,7 @@ class _AddPhotoState extends State<AddPhoto> {
     final file = File(filePath!);
     print('Recorder file path is : $file');
   }
+  //play record
 
   @override
   Widget build(BuildContext context) {
@@ -271,7 +274,6 @@ class _AddPhotoState extends State<AddPhoto> {
               child:
                   //record Button
                   Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(recorder.isRecording ? Icons.stop : Icons.mic_outlined,
                       size: 28, color: Color(0xFF2B3467)),
@@ -284,7 +286,40 @@ class _AddPhotoState extends State<AddPhoto> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF2B3467)),
-                  )
+                  ),
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFDBDFEA),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            width: 180,
+            height: 85,
+            padding: EdgeInsets.all(20),
+            child: ElevatedButton(
+              onPressed: () {},
+              child:
+                  //record Button
+                  Row(
+                children: [
+                  Icon(recorder.isRecording ? Icons.stop : Icons.play_arrow,
+                      size: 28, color: Color(0xFF2B3467)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    recorder.isRecording ? "Stop" : "Play",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2B3467)),
+                  ),
                 ],
               ),
               style: ElevatedButton.styleFrom(

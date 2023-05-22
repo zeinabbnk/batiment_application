@@ -15,8 +15,8 @@ class _LogInState extends State<LogIn> {
   final passController = TextEditingController();
   bool passToggle = true;
 
-  String? _email;
-  String?  _password;
+  String _email ='';
+  String _password ='';
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class _LogInState extends State<LogIn> {
                           }
                           return null;
                         },
-                        onSaved: (value) => _email = value!,
+                        onChanged: (val) => _email = val,
                       ),
                       SizedBox(
                         height: 30,
@@ -131,7 +131,7 @@ class _LogInState extends State<LogIn> {
                           }
                           return null;
                         },
-                        onSaved: (value) => _password = value!,
+                        onChanged: (val) => _password = val,
                       ),
                     ],
                   ),
@@ -158,12 +158,9 @@ class _LogInState extends State<LogIn> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed("infohome");
+                    Navigator.of(context).pushNamed("IntroPage");
                     if (_formField.currentState!.validate()) {
-                      _formField.currentState!.save();
-                      print('Success');
-                      emailController.clear();
-                      passController.clear();
+                      
                     }
                   },
                   child: Text(
