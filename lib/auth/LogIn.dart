@@ -1,5 +1,4 @@
-import 'dart:ffi';
-
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class LogIn extends StatefulWidget {
@@ -15,8 +14,8 @@ class _LogInState extends State<LogIn> {
   final passController = TextEditingController();
   bool passToggle = true;
 
-  String _email ='';
-  String _password ='';
+  String _email = '';
+  String _password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -159,9 +158,6 @@ class _LogInState extends State<LogIn> {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed("IntroPage");
-                    if (_formField.currentState!.validate()) {
-                      
-                    }
                   },
                   child: Text(
                     "Login",

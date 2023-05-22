@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class infoHome extends StatefulWidget {
   const infoHome({super.key});
@@ -11,6 +14,15 @@ class infoHome extends StatefulWidget {
 class _infoHomeState extends State<infoHome> {
   var SelectedItem = null;
 
+  final AdressController = TextEditingController();
+  final TypeBatimentController = TextEditingController();
+  final EtagesController = TextEditingController();
+
+
+  late DatabaseReference dbRef;
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,16 +32,17 @@ class _infoHomeState extends State<infoHome> {
           children: [
             Icon(
               Icons.insert_drive_file_outlined,
-              size: 33,  
+              size: 33,
             ),
-            SizedBox(width: 10,),
-            
+            SizedBox(
+              width: 10,
+            ),
             Text(
               "House Informations",
               style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                 ),
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             )
           ],
         ),
@@ -41,6 +54,7 @@ class _infoHomeState extends State<infoHome> {
         child: Column(
           children: [
             TextField(
+              controller: AdressController,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -59,49 +73,11 @@ class _infoHomeState extends State<infoHome> {
             SizedBox(
               height: 40,
             ),
-            DropdownSearch<String>(
-              popupProps: PopupProps.menu(
-                showSelectedItems: true,
-                disabledItemFn: (String s) => s.startsWith('I'),
-              ),
-              items: [
-                "Duplex",
-                "Appartement",
-                "Maison",
-                'Villa',
-                "Garçonnière"
-              ],
-              dropdownDecoratorProps: DropDownDecoratorProps(
-                dropdownSearchDecoration: InputDecoration(
-                  icon: Icon(
-                    Icons.house,
-                    color: Color(0xFF2B3467),
-                  ),
-                  labelText: "Type de Batiment",
-                  labelStyle: TextStyle(
-                      color: Color(0xFF2B3467), fontWeight: FontWeight.bold),
-                  hintText: "Choisir un Type de Batiment",
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide:
-                          BorderSide(color: Color(0xFFBAD7E9), width: 3)),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3),
-                  ),
-                ),
-              ),
-              onChanged: (val) {
-                setState(() {
-                  SelectedItem = val;
-                });
-              },
-              selectedItem: SelectedItem,
-            ),
-            SizedBox(
-              height: 40,
-            ),
+          
+           
+           
             TextField(
+              controller: EtagesController,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
