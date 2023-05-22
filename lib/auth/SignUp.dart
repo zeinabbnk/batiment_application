@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
@@ -17,9 +20,14 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final nameController = TextEditingController();
   final passController = TextEditingController();
-  final passConfirmController = TextEditingController();
+ // final passConfirmController = TextEditingController();
+  late DatabaseReference dbRef;
 
- 
+  @override
+  void initState() {
+    super.initState();
+    dbRef = FirebaseDatabase.instance.ref().child('Batiments');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +73,7 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       TextFormField(
+                        controller: nameController,
                         decoration: InputDecoration(
                             labelText: "User Name :",
                             labelStyle: TextStyle(
@@ -95,6 +104,7 @@ class _SignUpState extends State<SignUp> {
                         },
                       ),
                       TextFormField(
+                        controller: emailController,
                         decoration: InputDecoration(
                             labelText: "Email :",
                             labelStyle: TextStyle(
@@ -131,6 +141,7 @@ class _SignUpState extends State<SignUp> {
                         },
                       ),
                       TextFormField(
+                        controller: passController,
                         obscureText: true,
                         decoration: InputDecoration(
                             labelText: "Pass Word :",
@@ -161,40 +172,41 @@ class _SignUpState extends State<SignUp> {
                           _password = value!;
                         },
                       ),
-                      TextFormField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            labelText: "Confirm Pass Word :",
-                            labelStyle: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF394867)),
-                            prefixIcon: Icon(
-                              Icons.password_outlined,
-                              color: Color(0xFF394867),
-                            ),
-                            hintText: "Confirm_Pass_Word",
-                            hintStyle: TextStyle(
-                                fontSize: 12, color: Color(0xFFF6F1F1)),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFF394867), width: 3)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFF394867), width: 3))),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please confirm your password';
-                          }
-                          if (value != _password) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _confirmPassword = value!;
-                        },
-                      ),
+                     // TextFormField(
+                      //   controller: passConfirmController,
+                      //   obscureText: true,
+                      //   decoration: InputDecoration(
+                      //       labelText: "Confirm Pass Word :",
+                      //       labelStyle: TextStyle(
+                      //           fontSize: 12,
+                      //           fontWeight: FontWeight.w600,
+                      //           color: Color(0xFF394867)),
+                      //       prefixIcon: Icon(
+                      //         Icons.password_outlined,
+                      //         color: Color(0xFF394867),
+                      //       ),
+                      //       hintText: "Confirm_Pass_Word",
+                      //       hintStyle: TextStyle(
+                      //           fontSize: 12, color: Color(0xFFF6F1F1)),
+                      //       enabledBorder: UnderlineInputBorder(
+                      //           borderSide: BorderSide(
+                      //               color: Color(0xFF394867), width: 3)),
+                      //       focusedBorder: UnderlineInputBorder(
+                      //           borderSide: BorderSide(
+                      //               color: Color(0xFF394867), width: 3))),
+                      //   validator: (value) {
+                      //     if (value == null || value.isEmpty) {
+                      //       return 'Please confirm your password';
+                      //     }
+                      //     if (value != _password) {
+                      //       return 'Passwords do not match';
+                      //     }
+                      //     return null;
+                      //   },
+                      //   onSaved: (value) {
+                      //     _confirmPassword = value!;
+                      //   },
+                      // ),
                     ],
                   ),
                 ),
@@ -221,13 +233,21 @@ class _SignUpState extends State<SignUp> {
                 Container(
                   child: ElevatedButton(
                     onPressed: () {
+                      Map<String, String> Batiments = {
+                        'name': nameController.text,
+                        'email': emailController.text,
+                        'password': passController.text,
+                       // 'confirmpass': passConfirmController.text
+                      };
+                      dbRef.push().set(Batiments);
+
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         print('Success');
                         emailController.clear();
                         nameController.clear();
                         passController.clear();
-                        passConfirmController.clear();
+                     //   passConfirmController.clear();
                       }
                     }, //_submitForm,
                     child: Text(
@@ -254,3 +274,5 @@ class _SignUpState extends State<SignUp> {
     );
   }
 }
+
+
