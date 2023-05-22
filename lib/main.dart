@@ -4,9 +4,13 @@ import 'package:batiment_application/crud/Add.dart';
 import 'package:batiment_application/crud/Add2.dart';
 import 'package:batiment_application/crud/infos.dart';
 import 'package:batiment_application/home/HomePage.dart';
+import 'package:batiment_application/home/Intro.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -22,6 +26,7 @@ class MyApp extends StatelessWidget {
         "login": (context) => LogIn(),
         "signup": (context) => SignUp(),
         "homepage": (context) => HomePage(),
+        "IntroPage": (context) => IntroPage(),
         "addMaquette": (context) => AddMqt(),
         "infohome": (context) => infoHome(),
         "addPhoto": (context) => AddPhoto(),

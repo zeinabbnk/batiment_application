@@ -19,17 +19,7 @@ class _SignUpState extends State<SignUp> {
   final passController = TextEditingController();
   final passConfirmController = TextEditingController();
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      // Form is valid, process the data
-      _formKey.currentState!.save();
-      // Process the form data as per your requirements
-      print('Name: $_name');
-      print('Email: $_email');
-      print('Password: $_password');
-      print('Confirm Password: $_confirmPassword');
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

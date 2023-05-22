@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 
@@ -32,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       "image": "3.jpg"
     }
   ];
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,16 +178,19 @@ class _HomePageState extends State<HomePage> {
           size: 35,
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.all(9),
-        child: ListView.builder(
-            itemCount: 4,
-            itemBuilder: (context, i) {
-              return ListCommentaire(
-                commentaires: commentaires[i],
-              );
-            }),
-      ),
+      body: 
+          Container(
+            margin: EdgeInsets.all(9),
+            child: ListView.builder(
+                itemCount: 4,
+                itemBuilder: (context, i) {
+                  return ListCommentaire(
+                    commentaires: commentaires[i],
+                  );
+                }),
+          ),
+      
+     
     );
   }
 }
