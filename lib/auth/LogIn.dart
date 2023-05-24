@@ -1,3 +1,4 @@
+import 'package:batiment_application/service/authService.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -9,13 +10,14 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-  final _formField = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final passController = TextEditingController();
-  bool passToggle = true;
+  bool inLoginProcess = false;
 
-  String _email = '';
-  String _password = '';
+  signin() {
+    setState(() {
+      inLoginProcess = true;
+      AuthService().signInWithGoogle();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,153 +31,62 @@ class _LogInState extends State<LogIn> {
       )),
       child: Card(
         color: Colors.transparent,
-        margin: const EdgeInsets.symmetric(vertical: 80, horizontal: 50),
+        margin: const EdgeInsets.symmetric(vertical: 150, horizontal: 40),
         elevation: 5,
         shadowColor: const Color(0xFFF6F1F1),
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 10),
-          child: Form(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Image.asset(
-                  "images/2.png",
-                  height: 120,
-                  width: 200,
-                  color: Color(0xFF394867),
-                ),
-                Form(
-                  key: _formField,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        controller: emailController,
-                        decoration: InputDecoration(
-                            labelText: "User Email :",
-                            labelStyle: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF394867)),
-                            prefixIcon: Icon(
-                              Icons.email_outlined,
-                              color: Color(0xFF394867),
-                            ),
-                            hintText: "Enter_Email",
-                            hintStyle: TextStyle(
-                                fontSize: 12, color: Color(0xFFF6F1F1)),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFF394867), width: 3)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFF394867), width: 3))),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Enter Email";
-                          }
-                          bool emailValid = RegExp(
-                                  r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-                              .hasMatch(value);
-                          if (!emailValid) {
-                            return "Enter Valid Email";
-                          }
-                          return null;
-                        },
-                        onChanged: (val) => _email = val,
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      TextFormField(
-                        obscureText: passToggle,
-                        controller: passController,
-                        decoration: InputDecoration(
-                            labelText: "Pass Word :",
-                            labelStyle: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF394867)),
-                            prefixIcon: Icon(
-                              Icons.password,
-                              color: Color(0xFF394867),
-                            ),
-                            suffixIcon: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  passToggle = !passToggle;
-                                });
-                              },
-                              child: Icon(
-                                passToggle
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Color(0xFF394867),
-                              ),
-                            ),
-                            hintText: "Enter_Pass_Word",
-                            hintStyle: TextStyle(
-                                fontSize: 12, color: Color(0xFFF6F1F1)),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFF394867), width: 3)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFF394867), width: 3))),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Enter Your PassWord";
-                          } else if (passController.text.length < 6) {
-                            return "PassWord should have more than 6 characters";
-                          }
-                          return null;
-                        },
-                        onChanged: (val) => _password = val,
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Row(children: [
-                    Text("if you haven't an account"),
-                    SizedBox(
-                      width: 3,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed("signup");
-                      },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "images/logo.png",
+                height: 180,
+                width: 350,
+                color: Color(0xFF394867),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Expert Eye",
+                style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w800,
+                    fontStyle: FontStyle.italic,
+                    color: Color(0xFF394867),
+                    shadows: [
+                      Shadow(
+                          color: Color(0xFFF6F1F1),
+                          blurRadius: 25,
+                          offset: Offset(0, 15))
+                    ]),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              inLoginProcess
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ElevatedButton(
+                      onPressed: () => signin(),
                       child: Text(
-                        "Click here",
+                        "Connectez-vous avec Google",
                         style: TextStyle(
-                            color: Color(0xFF87CBB9),
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.underline),
+                            fontSize: 15,
+                            color: Color(0xFF212A3E),
+                            fontWeight: FontWeight.w700),
                       ),
+                      style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFF1F6F9),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 25),
+                          elevation: 10,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15))),
                     ),
-                  ]),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed("IntroPage");
-                  },
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                        fontSize: 22,
-                        color: Color(0xFF212A3E),
-                        fontWeight: FontWeight.w600),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFF1F6F9),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 1, horizontal: 25),
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15))),
-                ),
-              ],
-            ),
+            ],
           ),
         ),
       ),
