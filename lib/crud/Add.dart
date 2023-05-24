@@ -1,6 +1,8 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,6 +25,17 @@ class _AddMqtState extends State<AddMqt> {
 
     setState(() {});
     this._photo = photoTemporary;
+  }
+
+  final NumEController = TextEditingController();
+  final TitreController = TextEditingController();
+
+  late DatabaseReference dbRef;
+
+  @override
+  void initState() {
+    super.initState();
+    dbRef = FirebaseDatabase.instance.ref().child('Maquette');
   }
 
   @override
@@ -103,6 +116,7 @@ class _AddMqtState extends State<AddMqt> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: TextField(
+                controller: NumEController,
                 cursorColor: Color(0xFFBAD7E9),
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -125,6 +139,7 @@ class _AddMqtState extends State<AddMqt> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                controller: TitreController,
                 cursorColor: Color(0xFFBAD7E9),
                 decoration: InputDecoration(
                   hintMaxLines: 1,
@@ -141,7 +156,6 @@ class _AddMqtState extends State<AddMqt> {
                       borderSide:
                           BorderSide(color: Color(0xFFBAD7E9), width: 3)),
                 ),
-              
               ),
             ),
             SizedBox(
@@ -152,6 +166,11 @@ class _AddMqtState extends State<AddMqt> {
               alignment: Alignment.center,
               child: ElevatedButton(
                 onPressed: () {
+                  Map<String, String> Maquette = {
+                    'NumEtage': NumEController.text,
+                    'titre': TitreController.text,
+                  };
+                  dbRef.push().set(Maquette);
                   Navigator.of(context).pushNamed("addPhoto");
                 },
                 child: Row(

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "926747129695",
+    "firebase_url": "https://experteye-47e8c-default-rtdb.firebaseio.com",
+    "project_id": "experteye-47e8c",
+    "storage_bucket": "experteye-47e8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926747129695:android:25d6e18653ab312dda68ea",
+        "android_client_info": {
+          "package_name": "com.example.batiment_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926747129695-usrqnkcp2bhso17k1v6p6d83ifv0t98m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzOtjRX7ClQI2cE65VRdIh0Y-UeEaEXms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926747129695-n4ip6abqnaj6shipotaeig8d6het1bmh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,29 +9,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List commentaires = [
-    {
-      "commentaire":
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem ",
-      "image": "3.jpg"
-    },
-    {
-      "commentaire":
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem",
-      "image": "3.jpg"
-    },
-    {
-      "commentaire":
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem ",
-      "image": "3.jpg"
-    },
-    {
-      "commentaire":
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem ",
-      "image": "3.jpg"
-    }
-  ];
- 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,79 +157,13 @@ class _HomePageState extends State<HomePage> {
           size: 35,
         ),
       ),
-      body: 
-          Container(
-            margin: EdgeInsets.all(9),
-            child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (context, i) {
-                  return ListCommentaire(
-                    commentaires: commentaires[i],
-                  );
-                }),
-          ),
-      
-     
-    );
-  }
-}
-
-class ListCommentaire extends StatelessWidget {
-  const ListCommentaire({super.key, this.commentaires});
-  final commentaires;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-      elevation: 6,
-      child: Row(
-        children: [
-          Expanded(
-              flex: 4,
-              child: Container(
-                padding: EdgeInsets.all(5),
-                child: Image.asset(
-                  "images/4.jpg",
-                  fit: BoxFit.fill,
-                  height: 190,
-                ),
-              )),
-          Expanded(
-              flex: 5,
-              child: ListTile(
-                title: Text("${commentaires['commentaire']}"),
-                subtitle: Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: Row(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.delete,
-                          color: Color(0xFF394867),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFDBDFEA),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child:
-                            Icon(Icons.edit_document, color: Color(0xFF394867)),
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFDBDFEA),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ))
-        ],
-      ),
+      body: Container(
+          margin: EdgeInsets.all(9),
+          child: Center(
+              child: Text(
+            "Welcome To Expert Eye Application",
+            style: TextStyle(fontSize: 20),
+          ))),
     );
   }
 }
