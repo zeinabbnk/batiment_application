@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:batiment_application/models/addMaquette.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
@@ -102,7 +104,11 @@ class _AddPhotoState extends State<AddPhoto> {
     final file = File(filePath!);
     print('Recorder file path is : $file');
   }
-  //play record
+
+  //ajouter une maquette
+  void showMaquette(BuildContext context) {
+    AddMaquette().showMaquette(context, ImageSource.gallery);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,16 +122,22 @@ class _AddPhotoState extends State<AddPhoto> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.help_outlined),
-            color: Color(0xFFF6F1F1),
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.photo),
+              onPressed: () => showMaquette(context),
+              icon: Icon(
+                Icons.photo,
+                size: 30,
+              ),
               color: Color(0xFFF6F1F1))
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: Color(0xFFF1F6F9),
+          child: Icon(
+            Icons.add_a_photo_outlined,
+            size: 30,
+            color: Color(0xFF394867),
+          )),
       body: Container(
         margin: EdgeInsets.only(top: 30),
         alignment: Alignment.center,
@@ -282,39 +294,6 @@ class _AddPhotoState extends State<AddPhoto> {
                   ),
                   Text(
                     recorder.isRecording ? "Stop" : "Record",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF2B3467)),
-                  ),
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFDBDFEA),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10))),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            width: 180,
-            height: 85,
-            padding: EdgeInsets.all(20),
-            child: ElevatedButton(
-              onPressed: () {},
-              child:
-                  //record Button
-                  Row(
-                children: [
-                  Icon(recorder.isRecording ? Icons.stop : Icons.play_arrow,
-                      size: 28, color: Color(0xFF2B3467)),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    recorder.isRecording ? "Stop" : "Play",
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
