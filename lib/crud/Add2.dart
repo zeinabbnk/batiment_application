@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:batiment_application/models/addMaquette.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
@@ -21,33 +22,18 @@ class AddPhoto extends StatefulWidget {
 
 class _AddPhotoState extends State<AddPhoto> {
   var SelectedPan = null;
-//fonction pour prendre les photos
-  File? _photo;
-//take photo function
-  GetImage() async {
-    try {
-      final photo = await ImagePicker().getImage(source: ImageSource.camera);
-      if (photo == null) return;
 
-      final photoPermanent = await saveImage(photo.path);
-
-      setState(() {
-        this._photo = photoPermanent;
-      });
-    } on PlatformException catch (e) {
-      print('failed to pick image : $e');
-    }
-    // ignore: deprecated_member_use
+//upload Image to FireBase Storage
+  void uploadImage() async {
+    PickedFile? pickerFile =
+        await ImagePicker().getImage(source: ImageSource.camera);
+    File fileImage = File(pickerFile!.path);
   }
 
-  //save photo function
-
-  Future<File> saveImage(String imagePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
-    final image = File('${directory.path}/$name');
-    return File(imagePath).copy(image.path);
-  }
+  //type de pannes
+  final keyForm = GlobalKey<FormState>();
+  String typePanne = '';
+  String Erreur = 'Veuillez Entrer les informations';
 
 //fonctions pour enregister audio
   @override
@@ -143,19 +129,20 @@ class _AddPhotoState extends State<AddPhoto> {
         alignment: Alignment.center,
         child: Column(children: [
           //taking Photo
-          _photo != null
-              ? Image.file(
-                  _photo!,
-                  width: 250,
-                  height: 250,
-                  fit: BoxFit.cover,
-                )
-              : Image.asset(
-                  "images/4.png",
-                  height: 150,
-                  width: 200,
-                  color: Color(0xFF2B3467),
-                ),
+          // _photo != null
+          //     ? Image.file(
+          //         _photo!,
+          //         width: 250,
+          //         height: 250,
+          //         fit: BoxFit.cover,
+          //       )
+          //     :
+          Image.asset(
+            "images/4.png",
+            height: 150,
+            width: 200,
+            color: Color(0xFF2B3467),
+          ),
           SizedBox(
             height: 30,
           ),
@@ -164,7 +151,7 @@ class _AddPhotoState extends State<AddPhoto> {
             alignment: Alignment.center,
             child: ElevatedButton(
               onPressed: () {
-                GetImage();
+                // GetImage();
               },
               child: Row(
                 children: [
@@ -196,46 +183,29 @@ class _AddPhotoState extends State<AddPhoto> {
             height: 30,
           ),
 
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            child: DropdownSearch<String>(
-              popupProps: PopupProps.menu(
-                showSelectedItems: true,
-                disabledItemFn: (String s) => s.startsWith('I'),
-              ),
-              items: [
-                "Pannes électriques",
-                "Pannes de plomberie",
-                "Pannes de toiture ",
-                'Pannes de serrurerie',
-                "Problème de peinture",
-              ],
-              dropdownDecoratorProps: DropDownDecoratorProps(
-                dropdownSearchDecoration: InputDecoration(
-                  icon: Icon(
-                    Icons.house,
-                    color: Color(0xFF2B3467),
-                  ),
+          Form(
+            key: keyForm,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: TextFormField(
+                // controller: NumEController,
+                cursorColor: Color(0xFFBAD7E9),
+                decoration: InputDecoration(
+                  hintMaxLines: 1,
                   labelText: "Type de Panne",
                   labelStyle: TextStyle(
                       color: Color(0xFF2B3467), fontWeight: FontWeight.bold),
-                  hintText: "Choisir le Type de panne",
+                  prefixIcon: Icon(Icons.roofing, color: Color(0xFF2B3467)),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide:
-                          BorderSide(color: Color(0xFFBAD7E9), width: 3)),
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3)),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3),
-                  ),
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3)),
                 ),
+                onChanged: (value) => typePanne = value,
+                validator: (value) => typePanne == '|' ? Erreur : null,
               ),
-              onChanged: (val) {
-                setState(() {
-                  SelectedPan = val;
-                });
-              },
-              selectedItem: SelectedPan,
             ),
           ),
 
