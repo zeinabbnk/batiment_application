@@ -80,11 +80,23 @@ class _infoHomeState extends State<infoHome> {
                   size: 28,
                   color: Color(0xFF394867),
                 ),
-                onTap: () {
-                  Navigator.of(context).pushNamed("");
-                },
+                onTap: () {},
               ),
             ),
+            Container(
+                margin: EdgeInsets.only(top: 500),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed("wrapper");
+                  },
+                  child: Text(
+                    'Log Out',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF394867)),
+                  ),
+                ))
           ],
         ),
       ),
