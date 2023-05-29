@@ -6,8 +6,11 @@ import 'package:batiment_application/crud/infos.dart';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:batiment_application/service/authService.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'auth/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,10 +33,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Wrapper(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return infoHome();
+          } else {
+            return const LoginPage();
+          }
+        },
+      ),
       routes: {
         "login": (context) => LogIn(),
-        "wrapper": (context) => Wrapper(),
+        // "wrapper": (context) => Wrapper(),
         "homepage": (context) => HomePage(),
         "infohome": (context) => infoHome(),
         "addPhoto": (context) => AddPhoto(),

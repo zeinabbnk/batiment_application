@@ -1,7 +1,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
               shadowColor: Colors.blueGrey,
               child: ListTile(
                 title: Text(
-                  "Log Out",
+                  "Log Ou",
                   style: TextStyle(
                       fontSize: 18,
                       color: Color(0xFF394867),

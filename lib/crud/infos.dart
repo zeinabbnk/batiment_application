@@ -21,6 +21,8 @@ class _infoHomeState extends State<infoHome> {
 
   @override
   Widget build(BuildContext context) {
+    final currUsers = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFBAD7E9),
@@ -63,7 +65,7 @@ class _infoHomeState extends State<infoHome> {
                   "Zeinab",
                   style: TextStyle(color: Color(0xFF394867)),
                 ),
-                accountEmail: Text("zaina.benkrimi43@gmail.com",
+                accountEmail: Text("Hell",
                     style: TextStyle(color: Color(0xFF394867)))),
             Card(
               color: Color(0xFFBAD7E9),
@@ -87,7 +89,7 @@ class _infoHomeState extends State<infoHome> {
                 margin: EdgeInsets.only(top: 500),
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context).pushNamed("wrapper");
+                    FirebaseAuth.instance.signOut();
                   },
                   child: Text(
                     'Log Out',
