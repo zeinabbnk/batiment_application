@@ -3,13 +3,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../models/maquetteModel.dart';
 
+
 class DBMaquette {
-//déclaration et initialisation
+//déclaration et initialisation de la maquette
   CollectionReference _maquette =
       FirebaseFirestore.instance.collection('maquettes');
   FirebaseStorage _storage = FirebaseStorage.instance;
 
-//upload photo to firebase function
+//upload photo from Gallery to firebase function
   Future<String> uploadMaquette(file) async {
     Reference reference =
         _storage.ref().child('maquettes/${DateTime.now()}.png');
@@ -28,3 +29,5 @@ class DBMaquette {
     });
   }
 }
+
+
