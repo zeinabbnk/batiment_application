@@ -12,6 +12,7 @@ class AddMaquette {
     XFile? _pickerFile = await ImagePicker().pickImage(source: source);
     File _file = File(_pickerFile!.path);
 
+    if (_file == null) return;
     final _keyForm = GlobalKey<FormState>();
     String _NumE = '';
     String _titre = '';
@@ -64,7 +65,7 @@ class AddMaquette {
                                       borderSide: BorderSide(
                                           color: Color(0xFFBAD7E9), width: 3)),
                                 ),
-                                onChanged: (value) => _NumE = value ,
+                                onChanged: (value) => _NumE = value,
                                 validator: (value) =>
                                     _NumE == '|' ? _Erreur : null,
                               ),
@@ -115,7 +116,8 @@ class AddMaquette {
                     Container(
                       margin: EdgeInsets.only(right: 9, bottom: 5),
                       child: ElevatedButton(
-                        onPressed: () => _onSubmit(context, _keyForm, _file, _titre, _NumE),
+                        onPressed: () =>
+                            _onSubmit(context, _keyForm, _file, _titre, _NumE),
                         child: Text(
                           "Suivant",
                           style: TextStyle(
@@ -145,7 +147,7 @@ class AddMaquette {
       DBMaquette db = DBMaquette();
       String _MaqURLImage = await db.uploadMaquette(file);
       db.addMaquette(Maquette(
-        titre : titre,
+        titre: titre,
         NumE: NumE,
         MaqURLImage: _MaqURLImage,
       ));

@@ -212,7 +212,8 @@ class _infoHomeState extends State<infoHome> {
                         );
                       }
                     }
-                    Navigator.of(context).pushNamed("addPhoto");
+                    ;
+                    Navigator.of(context).pushNamed("AddPanne");
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

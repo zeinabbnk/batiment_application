@@ -1,6 +1,7 @@
 import 'package:batiment_application/auth/login.dart';
 import 'package:batiment_application/auth/wrapper.dart';
 import 'package:batiment_application/crud/Add2.dart';
+import 'package:batiment_application/crud/AddPanne.dart';
 import 'package:batiment_application/crud/infos.dart';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:batiment_application/service/authService.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         "homepage": (context) => HomePage(),
         "infohome": (context) => infoHome(),
         "addPhoto": (context) => AddPhoto(),
+        "AddPanne": (context) => AddPanne(),
       },
     );
   }

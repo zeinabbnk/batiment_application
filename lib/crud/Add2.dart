@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class AddPhoto extends StatefulWidget {
   const AddPhoto({super.key});
@@ -21,14 +22,26 @@ class AddPhoto extends StatefulWidget {
 }
 
 class _AddPhotoState extends State<AddPhoto> {
-  var SelectedPan = null;
+  String? imageUrl;
 
-//upload Image to FireBase Storage
-  void uploadImage() async {
-    PickedFile? pickerFile =
-        await ImagePicker().getImage(source: ImageSource.camera);
-    File fileImage = File(pickerFile!.path);
+//take a picture
+  takeImage() async {
+    final _imagePicker = ImagePicker();
+    PickedFile? image;
+    //Check Permissions
+    await Permission.photos.request();
+
+    var permissionStatus = await Permission.photos.status;
+
+    if (permissionStatus.isGranted) {
+      //Select Image
+      image = await _imagePicker.getImage(source: ImageSource.camera);
+      if (image == null) return;
+      var file = File(image.path);
+    }
   }
+
+//upload data
 
   //type de pannes
   final keyForm = GlobalKey<FormState>();
@@ -96,6 +109,8 @@ class _AddPhotoState extends State<AddPhoto> {
     AddMaquette().showMaquette(context, ImageSource.gallery);
   }
 
+  //upload Data
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,33 +131,19 @@ class _AddPhotoState extends State<AddPhoto> {
               color: Color(0xFFF6F1F1))
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: Color(0xFFF1F6F9),
-          child: Icon(
-            Icons.add_a_photo_outlined,
-            size: 30,
-            color: Color(0xFF394867),
-          )),
       body: Container(
         margin: EdgeInsets.only(top: 30),
         alignment: Alignment.center,
         child: Column(children: [
           //taking Photo
-          // _photo != null
-          //     ? Image.file(
-          //         _photo!,
-          //         width: 250,
-          //         height: 250,
-          //         fit: BoxFit.cover,
-          //       )
-          //     :
-          Image.asset(
-            "images/4.png",
-            height: 150,
-            width: 200,
-            color: Color(0xFF2B3467),
-          ),
+          (imageUrl != null)
+              ? Image.network(imageUrl!)
+              : Image.asset(
+                  "images/4.png",
+                  height: 150,
+                  width: 200,
+                  color: Color(0xFF2B3467),
+                ),
           SizedBox(
             height: 30,
           ),
@@ -151,7 +152,7 @@ class _AddPhotoState extends State<AddPhoto> {
             alignment: Alignment.center,
             child: ElevatedButton(
               onPressed: () {
-                // GetImage();
+                takeImage();
               },
               child: Row(
                 children: [
@@ -198,10 +199,12 @@ class _AddPhotoState extends State<AddPhoto> {
                   prefixIcon: Icon(Icons.roofing, color: Color(0xFF2B3467)),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3)),
+                      borderSide:
+                          BorderSide(color: Color(0xFFBAD7E9), width: 3)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3)),
+                      borderSide:
+                          BorderSide(color: Color(0xFFBAD7E9), width: 3)),
                 ),
                 onChanged: (value) => typePanne = value,
                 validator: (value) => typePanne == '|' ? Erreur : null,
