@@ -5,6 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../auth/login_page.dart';
+
 class infoHome extends StatefulWidget {
   const infoHome({super.key});
 
@@ -65,8 +67,8 @@ class _infoHomeState extends State<infoHome> {
                   "Zeinab",
                   style: TextStyle(color: Color(0xFF394867)),
                 ),
-                accountEmail: Text("Hell",
-                    style: TextStyle(color: Color(0xFF394867)))),
+                accountEmail:
+                    Text("Hell", style: TextStyle(color: Color(0xFF394867)))),
             Card(
               color: Color(0xFFBAD7E9),
               child: ListTile(
@@ -90,6 +92,11 @@ class _infoHomeState extends State<infoHome> {
                 child: InkWell(
                   onTap: () {
                     FirebaseAuth.instance.signOut();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      (Route<dynamic> route) => false,
+                    );
                   },
                   child: Text(
                     'Log Out',
