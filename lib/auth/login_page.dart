@@ -15,69 +15,132 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Login Page"),
-        ),
-        body: SafeArea(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-                child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  border: Border.all(color: Colors.black)),
-              width: MediaQuery.of(context).size.width * .8,
-              child: TextField(
-                controller: emailController,
-                style: const TextStyle(
-                    fontSize: 30,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-                decoration: const InputDecoration(
-                    hintText: 'Email',
-                    hintStyle: TextStyle(color: Colors.black, fontSize: 25),
-                    border: InputBorder.none),
-              ),
+        body: Container(
+            constraints: const BoxConstraints.expand(),
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage("images/1.png"),
+              fit: BoxFit.cover,
             )),
-            const SizedBox(height: 20),
-            Center(
-                child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  border: Border.all(color: Colors.black)),
-              width: MediaQuery.of(context).size.width * .8,
-              child: TextField(
-                controller: passwordController,
-                style: const TextStyle(
-                    fontSize: 30,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-                decoration: const InputDecoration(
-                    hintText: 'Password',
-                    hintStyle: TextStyle(color: Colors.black, fontSize: 25),
-                    border: InputBorder.none),
+            child: Card(
+              color: Colors.transparent,
+              margin: const EdgeInsets.symmetric(vertical: 85, horizontal: 40),
+              elevation: 5,
+              shadowColor: const Color(0xFFF6F1F1),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "images/logo.png",
+                    height: 150,
+                    width: 300,
+                    color: Color(0xFF394867),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: TextField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                          labelText: "Email :",
+                          labelStyle: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF394867)),
+                          prefixIcon: Icon(
+                            Icons.email_outlined,
+                            color: Color(0xFFedf4f4),
+                            size: 25,
+                          ),
+                          hintText: "Enter_Email",
+                          hintStyle:
+                              TextStyle(fontSize: 12, color: Color(0xFFF6F1F1)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF394867), width: 3)),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF394867), width: 3))),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: TextField(
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          labelText: "Pass Word :",
+                          labelStyle: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF394867)),
+                          prefixIcon: Icon(
+                            Icons.password,
+                            color: Color(0xFFedf4f4),
+                            size: 25,
+                          ),
+                          hintText: "Enter_Pass_Word",
+                          hintStyle:
+                              TextStyle(fontSize: 12, color: Color(0xFFF6F1F1)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF394867), width: 3)),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF394867), width: 3))),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xFF356762),
+                            shape: BeveledRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          onPressed: () {
+                            FirebaseAuth.instance.signInWithEmailAndPassword(
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim());
+                          },
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Color(0xFFedf4f4),
+                                fontWeight: FontWeight.bold),
+                          )),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xFF356762),
+                            shape: BeveledRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          onPressed: () {
+                            FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim());
+                          },
+                          child: const Text(
+                            'Signup',
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Color(0xFFedf4f4),
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ],
+                  ),
+                ],
               ),
-            )),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                onPressed: () {
-                  FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim());
-                },
-                child: const Text('Login')),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                onPressed: () {
-                  FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim());
-                },
-                child: const Text('Signup')),
-          ],
-        )));
+            )));
   }
 
   // Dispose Methode
