@@ -13,9 +13,9 @@ class _welcomeState extends State<welcome> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed("infohome");
+          Navigator.of(context).pushNamed("homepage");
         },
-        backgroundColor:  Color(0xFF95af50),
+        backgroundColor: Color(0xFF95af50),
         child: Icon(
           Icons.navigate_next_outlined,
           size: 50,

@@ -28,25 +28,6 @@ class _infoHomeState extends State<infoHome> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFBAD7E9),
-        // title: Row(
-        //   children: [
-        //     Icon(
-        //       Icons.insert_drive_file_outlined,
-        //       size: 33,
-        //     ),
-        //     SizedBox(
-        //       width: 10,
-        //     ),
-        //     Text(
-        //       "House Informations",
-        //       style: TextStyle(
-        //         fontSize: 25,
-        //         fontWeight: FontWeight.bold,
-        //       ),
-        //     )
-        //   ],
-        // ),
-        // centerTitle: true,
       ),
       drawer: Drawer(
         child: Column(
@@ -68,7 +49,7 @@ class _infoHomeState extends State<infoHome> {
                   style: TextStyle(color: Color(0xFF394867)),
                 ),
                 accountEmail:
-                    Text("Hell", style: TextStyle(color: Color(0xFF394867)))),
+                    Text("Hello", style: TextStyle(color: Color(0xFF394867)))),
             Card(
               color: Color(0xFFBAD7E9),
               child: ListTile(

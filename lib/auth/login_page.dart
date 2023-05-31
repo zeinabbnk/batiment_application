@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
             )),
             child: Card(
               color: Colors.transparent,
-              margin: const EdgeInsets.symmetric(vertical: 85, horizontal: 40),
+              margin: const EdgeInsets.symmetric(vertical: 70, horizontal: 40),
               elevation: 5,
               shadowColor: const Color(0xFFF6F1F1),
               child: Column(
@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Color(0xFF394867), width: 3))),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
@@ -93,50 +93,51 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Color(0xFF394867), width: 3))),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF356762),
-                            shape: BeveledRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                          onPressed: () {
-                            FirebaseAuth.instance.signInWithEmailAndPassword(
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim());
-                          },
-                          child: const Text(
-                            'Login',
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Color(0xFFedf4f4),
-                                fontWeight: FontWeight.bold),
-                          )),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF356762),
-                            shape: BeveledRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                          onPressed: () {
-                            FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
-                                    email: emailController.text.trim(),
-                                    password: passwordController.text.trim());
-                          },
-                          child: const Text(
-                            'Signup',
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Color(0xFFedf4f4),
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
+                  
+                  Container(
+                    margin: EdgeInsets.only(top: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFF356762),
+                              shape: BeveledRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                            ),
+                            onPressed: () {
+                              FirebaseAuth.instance.signInWithEmailAndPassword(
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim());
+                            },
+                            child: const Text(
+                              'Log In',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color(0xFFedf4f4),
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFF356762),
+                              shape: BeveledRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                            ),
+                            onPressed: () {
+                              FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                      email: emailController.text.trim(),
+                                      password: passwordController.text.trim());
+                            },
+                            child: const Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color(0xFFedf4f4),
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ],
+                    ),
                   ),
                 ],
               ),
