@@ -21,8 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ..rotateZ(isDrawerOpen ? -50 : 0),
       duration: Duration(milliseconds: 200),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(40),
         color: Color(0xFFeaf1f3),
+        borderRadius: BorderRadius.circular(40),
       ),
       child: SingleChildScrollView(
         child: Column(children: <Widget>[
@@ -85,9 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  cardExemple(text: "Consultez ", icon: Icons.edit_document),
-                  cardExemple(text: "Consultez ", icon: Icons.edit_document),
-                  cardExemple(text: "Consultez ", icon: Icons.edit_document),
                   cardExemple(text: "Consultez ", icon: Icons.edit_document),
                   cardExemple(text: "Consultez ", icon: Icons.edit_document),
                   cardExemple(text: "Consultez ", icon: Icons.edit_document),
