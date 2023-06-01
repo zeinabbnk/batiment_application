@@ -1,3 +1,5 @@
+import 'package:batiment_application/crud/AddPanne.dart';
+import 'package:batiment_application/home/HomePage.dart';
 import 'package:batiment_application/service/FireBaseCRUD.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,228 +28,251 @@ class _infoHomeState extends State<infoHome> {
     final currUsers = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFFBAD7E9),
-      ),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            const UserAccountsDrawerHeader(
-                decoration: BoxDecoration(color: Color(0xFFBAD7E9)),
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Color(0xFFEB455F),
-                  child: Text(
-                    "Z",
-                    style: TextStyle(
-                        color: Color(0xFF394867),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 40),
-                  ),
-                ),
-                accountName: Text(
-                  "Zeinab",
-                  style: TextStyle(color: Color(0xFF394867)),
-                ),
-                accountEmail:
-                    Text("Hello", style: TextStyle(color: Color(0xFF394867)))),
-            Card(
-              color: Color(0xFFBAD7E9),
-              child: ListTile(
-                title: Text(
-                  "Home Page",
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFF394867),
-                      fontWeight: FontWeight.w700),
-                ),
-                leading: Icon(
-                  Icons.home,
-                  size: 28,
-                  color: Color(0xFF394867),
-                ),
-                onTap: () {},
-              ),
-            ),
-            Container(
-                margin: EdgeInsets.only(top: 500),
-                child: InkWell(
-                  onTap: () {
-                    FirebaseAuth.instance.signOut();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                      (Route<dynamic> route) => false,
-                    );
-                  },
-                  child: Text(
-                    'Log Out',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF394867)),
-                  ),
-                ))
-          ],
+      backgroundColor: Color(0xFFeaf1f3),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => AddPanne()),
+            (Route<dynamic> route) => false,
+          );
+        },
+        child: Icon(
+          Icons.arrow_forward_ios_rounded,
+          size: 30,
         ),
+        backgroundColor: Color(0xFF95af50),
       ),
-      body: Container(
-        margin: EdgeInsets.only(top: 32),
-        padding: EdgeInsets.symmetric(horizontal: 30),
-        child: Form(
-          key: _formKey,
-          child: Column(
+      body: SafeArea(
+          child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Column(
             children: [
-              Text(
-                "Enter The House Informations",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                controller: AdressController,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3),
-                  ),
-                  labelText: "Adress ",
-                  icon: Icon(Icons.location_city, color: Color(0xFF2B3467)),
-                  labelStyle: TextStyle(
-                      color: Color(0xFF2B3467), fontWeight: FontWeight.bold),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'The Field is required';
-                  }
-                },
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              TextFormField(
-                controller: typeBController,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3),
-                  ),
-                  labelText: "Type de Bâtiment ",
-                  icon: Icon(Icons.location_city, color: Color(0xFF2B3467)),
-                  labelStyle: TextStyle(
-                      color: Color(0xFF2B3467), fontWeight: FontWeight.bold),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'The Field is required';
-                  }
-                },
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              TextFormField(
-                controller: EtagesController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Color(0xFFBAD7E9), width: 3),
-                  ),
-                  labelText: "Nombre d'étages ",
-                  icon: Icon(Icons.stairs, color: Color(0xFF2B3467)),
-                  labelStyle: TextStyle(
-                      color: Color(0xFF2B3467), fontWeight: FontWeight.bold),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'The Field is required';
-                  }
-                },
-              ),
-              SizedBox(
-                height: 25,
-              ),
               Container(
-                width: 180,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      var response = await FireBaseCRUD.addHouse(
-                          Adress: AdressController.text,
-                          TypeBatiment: typeBController.text,
-                          NumEtage: EtagesController.text);
-                      if (response.code != 200) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              content: Text(response.message.toString()),
+                width: double.infinity,
+                height: 240,
+                decoration: BoxDecoration(
+                    color: Color(0xFF356762),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(40),
+                        bottomRight: Radius.circular(40))),
+                child: Column(children: [
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()),
+                              (Route<dynamic> route) => false,
                             );
                           },
-                        );
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              content: Text(response.toString()),
-                            );
-                          },
-                        );
-                      }
-                    }
-                    ;
-                    Navigator.of(context).pushNamed("AddPanne");
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.upload_file_outlined,
-                        color: Color(0xFF2B3467),
-                        size: 26,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Commencer",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF2B3467)),
-                      )
-                    ],
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFEB455F),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                  ),
-                ),
+                          child: Icon(
+                            Icons.arrow_back_rounded,
+                            color: Color(0xFFeaf1f3),
+                          ),
+                        ),
+                        Text("Adding House",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFFeaf1f3))),
+                        Image.asset(
+                          "images/logo.png",
+                          color: Color(0xFFeaf1f3),
+                          height: 50,
+                          width: 50,
+                        ),
+                      ],
+                    ),
+                  )
+                ]),
               )
             ],
           ),
-        ),
-      ),
+          Positioned(
+            top: 120,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xFFeaf1f3),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 6.0,
+                    offset: Offset(0.0, 0.0),
+                  )
+                ],
+              ),
+              height: 550,
+              width: 340,
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      controller: AdressController,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Color(0xFF9fbdc2), width: 3),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Color(0xFF9fbdc2), width: 3),
+                        ),
+                        labelText: "Adress ",
+                        icon:
+                            Icon(Icons.location_city, color: Color(0xFF4d6d7c)),
+                        labelStyle: TextStyle(
+                            color: Color(0xFF4d6d7c),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'The Field is required';
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    TextFormField(
+                      controller: typeBController,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Color(0xFF9fbdc2), width: 3),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Color(0xFF9fbdc2), width: 3),
+                        ),
+                        labelText: "Type de Bâtiment ",
+                        icon:
+                            Icon(Icons.house_rounded, color: Color(0xFF4d6d7c)),
+                        labelStyle: TextStyle(
+                            color: Color(0xFF4d6d7c),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'The Field is required';
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    TextFormField(
+                      controller: EtagesController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Color(0xFF9fbdc2), width: 3),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Color(0xFF9fbdc2), width: 3),
+                        ),
+                        labelText: "Nombre d'étages ",
+                        icon: Icon(Icons.stairs, color: Color(0xFF4d6d7c)),
+                        labelStyle: TextStyle(
+                            color: Color(0xFF4d6d7c),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'The Field is required';
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 60),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            var response = await FireBaseCRUD.addHouse(
+                                Adress: AdressController.text,
+                                TypeBatiment: typeBController.text,
+                                NumEtage: EtagesController.text);
+                            if (response.code != 200) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Text(response.message.toString()),
+                                  );
+                                },
+                              );
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Text(response.toString()),
+                                  );
+                                },
+                              );
+                            }
+                          }
+                          ;
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.upload_file_outlined,
+                              color: Color(0xFFeaf1f3),
+                              size: 26,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "Enregistrer",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFeaf1f3)),
+                            )
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF816856),
+                          shape: BeveledRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      )),
     );
   }
 }

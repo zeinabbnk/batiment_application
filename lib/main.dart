@@ -1,4 +1,3 @@
-import 'package:batiment_application/crud/Add2.dart';
 import 'package:batiment_application/crud/AddPanne.dart';
 import 'package:batiment_application/crud/infos.dart';
 import 'package:batiment_application/home/HomePage.dart';
@@ -46,7 +45,6 @@ class MyApp extends StatelessWidget {
         "welcome": (context) => welcome(),
         "homepage": (context) => HomePage(),
         "infohome": (context) => infoHome(),
-        "addPhoto": (context) => AddPhoto(),
         "AddPanne": (context) => AddPanne(),
       },
     );
