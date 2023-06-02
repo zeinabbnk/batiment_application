@@ -54,6 +54,9 @@ dependencies:
   speech_to_text: ^6.1.1
   microphone: ^0.1.0
   just_audio: ^0.9.33
+  pdf: ^3.10.4
+  printing: ^5.11.0
+  
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
