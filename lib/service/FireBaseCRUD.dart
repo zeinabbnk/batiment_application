@@ -29,4 +29,10 @@ class FireBaseCRUD {
     });
     return response;
   }
+
+  //read data
+  static Stream<QuerySnapshot> showHouse() {
+    CollectionReference houseItemCollection = _collection;
+    return houseItemCollection.snapshots();
+  }
 }

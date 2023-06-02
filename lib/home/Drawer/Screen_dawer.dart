@@ -66,7 +66,7 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
                       style: TextStyle(
                           color: Color(0xFF9fbdc2),
                           fontWeight: FontWeight.bold),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -75,11 +75,11 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
               ),
               InkWell(
                 onTap: () {
-                   Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => infoHome()),
-                (Route<dynamic> route) => false,
-              );
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => infoHome()),
+                    (Route<dynamic> route) => false,
+                  );
                 },
                 child: Row(
                   children: <Widget>[
@@ -95,7 +95,7 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
                       style: TextStyle(
                           color: Color(0xFF9fbdc2),
                           fontWeight: FontWeight.bold),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -105,10 +105,10 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
               InkWell(
                 onTap: () {
                   Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-                (Route<dynamic> route) => false,
-              );
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                    (Route<dynamic> route) => false,
+                  );
                 },
                 child: Row(
                   children: <Widget>[

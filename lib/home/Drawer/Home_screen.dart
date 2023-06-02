@@ -1,4 +1,10 @@
+import 'package:batiment_application/models/House.dart';
+import 'package:batiment_application/service/FireBaseCRUD.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+
+import '../../crud/AddPanne.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,6 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
   double yoffset = 0;
 
   bool isDrawerOpen = false;
+  CollectionReference Houses = FirebaseFirestore.instance.collection('House');
+  final Stream<QuerySnapshot> refHouse = FireBaseCRUD.showHouse();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ..rotateZ(isDrawerOpen ? -50 : 0),
       duration: Duration(milliseconds: 200),
       decoration: BoxDecoration(
-        color: Color(0xFFeaf1f3),
+        color: Color(0xFFF1F6F9),
         borderRadius: BorderRadius.circular(40),
       ),
       child: SingleChildScrollView(
@@ -35,7 +43,10 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
                 isDrawerOpen
                     ? GestureDetector(
-                        child: Icon(Icons.arrow_back_ios),
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Color(0xFF356762),
+                        ),
                         onTap: () {
                           setState(() {
                             xoffset = 0;
@@ -45,7 +56,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       )
                     : GestureDetector(
-                        child: Icon(Icons.menu),
+                        child: Icon(
+                          Icons.menu,
+                          color: Color(0xFF356762),
+                        ),
                         onTap: () {
                           setState(() {
                             xoffset = 300;
@@ -55,67 +69,220 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                 SizedBox(
-                  width: 100,
+                  width: 80,
                 ),
                 Text(
                   "Home Page",
                   style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none),
+                    fontSize: 25,
+                    color: Color(0xFF356762),
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+                SizedBox(
+                  width: 50,
+                ),
+                Image.asset(
+                  "images/logo.png",
+                  color: Color(0xFF356762),
+                  height: 50,
+                  width: 50,
+                  fit: BoxFit.fill,
                 )
               ],
             ),
           ),
           SizedBox(
-            height: 40,
+            height: 70,
           ),
           Container(
+            height: 690,
             decoration: BoxDecoration(
                 color: Color(0xFFeaf1f3),
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: Colors.grey.withOpacity(0.2),
                       spreadRadius: 2,
                       blurRadius: 5,
                       offset: Offset(0, 0))
                 ]),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  cardExemple(text: "Consultez ", icon: Icons.edit_document),
-                  cardExemple(text: "Consultez ", icon: Icons.edit_document),
-                  cardExemple(text: "Consultez ", icon: Icons.edit_document),
-                  cardExemple(text: "Consultez ", icon: Icons.edit_document),
-                  cardExemple(text: "Consultez ", icon: Icons.edit_document),
-                ]),
+            child: StreamBuilder(
+              stream: refHouse,
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  return Padding(
+                    padding: EdgeInsets.all(10),
+                    child: ListView(
+                        children: snapshot.data!.docs.map((e) {
+                      return Container(
+                        height: 220,
+                        child: Card(
+                          elevation: 20,
+                          child: ListTile(
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.delete_outline_outlined,
+                                size: 30,
+                                color: Color(0xFFEB455F),
+                              ),
+                              onPressed: () {},
+                            ),
+                            title: Row(
+                              children: [
+                                Icon(
+                                  Icons.house_rounded,
+                                  color: Color(0xFF4d6d7c),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  "House Informations",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF4d6d7c),
+                                      decoration: TextDecoration.underline),
+                                ),
+                              ],
+                            ),
+                            subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Adresse : ",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 18,
+                                      ),
+                                      Text(
+                                        e['Adesse'],
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Type de Bâtiment : ",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        width: 18,
+                                      ),
+                                      Text(
+                                        e['Type Bâtiment'],
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Numéro d'étage : ",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        width: 18,
+                                      ),
+                                      Text(
+                                        e['Numéro étage'],
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.file_open_rounded),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text("Rapport"),
+                                          ],
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Color(0xFF95af50)),
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddPanne()),
+                                            (Route<dynamic> route) => false,
+                                          );
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons
+                                                .add_circle_outline_rounded),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              "  Panne",
+                                              // style: TextStyle(fontSize: 16),
+                                            ),
+                                          ],
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Color(0xFF95af50)),
+                                      ),
+                                    ],
+                                  )
+                                ]),
+                          ),
+                        ),
+                      );
+                    }).toList()),
+                  );
+                }
+                return Container();
+              },
+            ),
           )
         ]),
-      ),
-    );
-  }
-}
-
-class cardExemple extends StatelessWidget {
-  final String text;
-  final IconData icon;
-
-  const cardExemple({super.key, required this.text, required this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(text),
-            Icon(icon),
-          ],
-        ),
-        margin: EdgeInsets.symmetric(horizontal: 40, vertical: 50),
       ),
     );
   }
