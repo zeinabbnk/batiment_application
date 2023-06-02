@@ -2,7 +2,9 @@ import 'package:batiment_application/crud/AddPanne.dart';
 import 'package:batiment_application/crud/infos.dart';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:batiment_application/home/welcome.dart';
+import 'package:batiment_application/report.dart';
 import 'package:batiment_application/service/authService.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +27,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+   MyApp({super.key});
+ 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -46,6 +48,7 @@ class MyApp extends StatelessWidget {
         "homepage": (context) => HomePage(),
         "infohome": (context) => infoHome(),
         "AddPanne": (context) => AddPanne(),
+        "Report":(context) => report(),
       },
     );
   }

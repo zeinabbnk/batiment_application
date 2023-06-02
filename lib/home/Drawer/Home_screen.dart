@@ -1,4 +1,5 @@
 import 'package:batiment_application/models/House.dart';
+import 'package:batiment_application/report.dart';
 import 'package:batiment_application/service/FireBaseCRUD.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -227,7 +228,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                         Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    report()),
+                                            (Route<dynamic> route) => false,
+                                          );
+
+                                        },
                                         child: Row(
                                           children: [
                                             Icon(Icons.file_open_rounded),

@@ -265,7 +265,10 @@ class _infoHomeState extends State<infoHome> {
                               borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
+                      
+                    
                     )
+
                   ],
                 ),
               ),
