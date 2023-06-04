@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 15,
                                 ),
                                 Text(
-                                  "House Informations",
+                                  "Informations de Bâtiment",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,

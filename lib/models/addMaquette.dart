@@ -59,11 +59,11 @@ class AddMaquette {
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide(
-                                          color: Color(0xFFBAD7E9), width: 3)),
+                                          color: Color(0xFFedf4f4), width: 3)),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide(
-                                          color: Color(0xFFBAD7E9), width: 3)),
+                                          color: Color(0xFFedf4f4), width: 3)),
                                 ),
                                 onChanged: (value) => _NumE = value,
                                 validator: (value) =>
@@ -86,11 +86,11 @@ class AddMaquette {
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide(
-                                          color: Color(0xFFBAD7E9), width: 3)),
+                                          color: Color(0xFFedf4f4), width: 3)),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide(
-                                          color: Color(0xFFBAD7E9), width: 3)),
+                                          color: Color(0xFFedf4f4), width: 3)),
                                 ),
                                 onChanged: (value) => _titre = value,
                                 validator: (value) =>
@@ -111,7 +111,7 @@ class AddMaquette {
                         child: Text(
                           "Annuler",
                           style:
-                              TextStyle(fontSize: 20, color: Color(0xFFFFD93D)),
+                              TextStyle(fontSize: 20, color: Color(0xFF95af50)),
                         )),
                     Container(
                       margin: EdgeInsets.only(right: 9, bottom: 5),
@@ -123,10 +123,10 @@ class AddMaquette {
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF2B3467)),
+                              ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFFFD93D),
+                          primary: Color(0xFF95af50),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                         ),

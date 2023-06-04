@@ -107,7 +107,11 @@ class _AddPanneState extends State<AddPanne> {
         PanneAudio: _AudiuURL,
         typePanne: typePanne,
       ));
-      print('data uploaded');
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(content: Text("Informations Enregistrées"));
+          });
     }
   }
 
@@ -122,6 +126,14 @@ class _AddPanneState extends State<AddPanne> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => uploadData(AudioFile, imageFile, typePanne),
+        backgroundColor: Color(0xFF95af50),
+        child: Icon(
+          Icons.upload,
+          size: 30,
+        ),
+      ),
       body: SafeArea(
         child: Stack(
           alignment: Alignment.center,
@@ -196,7 +208,7 @@ class _AddPanneState extends State<AddPanne> {
                     ),
                     height: 600,
                     width: 360,
-                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 2),
                     child: PageView(controller: _cotroller, children: [
                       Container(
                         margin:
@@ -211,7 +223,7 @@ class _AddPanneState extends State<AddPanne> {
                             Text(
                               "Ajouter Maquette",
                               style: TextStyle(
-                                fontSize: 35,
+                                fontSize: 30,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -225,7 +237,12 @@ class _AddPanneState extends State<AddPanne> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Icon(Icons.upload_file_rounded),
-                                    Text("Maquette"),
+                                    Text(
+                                      "Ajouter",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
                                   ],
                                 ),
                                 style: ElevatedButton.styleFrom(
@@ -239,8 +256,7 @@ class _AddPanneState extends State<AddPanne> {
                         ),
                       ),
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 95),
+                        margin: EdgeInsets.symmetric(vertical: 95),
                         decoration: BoxDecoration(
                           color: Color(0xFFC2DED1),
                           borderRadius: BorderRadius.circular(30),
@@ -248,6 +264,11 @@ class _AddPanneState extends State<AddPanne> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            Text(
+                              "Ajouter une Photo",
+                              style: TextStyle(
+                                  fontSize: 27, fontWeight: FontWeight.w600),
+                            ),
                             //take Picture
                             imageFile != null
                                 ? Image.file(
@@ -348,6 +369,14 @@ class _AddPanneState extends State<AddPanne> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              Text(
+                                "Recorder un Audio",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 26),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
                               //recording timer
                               StreamBuilder<RecordingDisposition>(
                                 builder: (context, snapshot) {
@@ -439,12 +468,9 @@ class _AddPanneState extends State<AddPanne> {
                       dotWidth: 20,
                     ),
                   ),
-                  
                 ],
               ),
             ),
-          
-            
           ],
         ),
       ),
