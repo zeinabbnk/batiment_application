@@ -231,7 +231,9 @@ class _infoHomeState extends State<infoHome> {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    content: Text(response.toString()),
+                                    content: Text(
+                                      response.message.toString(),
+                                    ),
                                   );
                                 },
                               );
@@ -265,10 +267,7 @@ class _infoHomeState extends State<infoHome> {
                               borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
-                      
-                    
                     )
-
                   ],
                 ),
               ),

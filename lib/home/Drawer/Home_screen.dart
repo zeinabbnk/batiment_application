@@ -1,5 +1,5 @@
+import 'package:batiment_application/crud/report.dart';
 import 'package:batiment_application/models/House.dart';
-import 'package:batiment_application/report.dart';
 import 'package:batiment_application/service/FireBaseCRUD.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -129,7 +129,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 size: 30,
                                 color: Color(0xFFEB455F),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                var response = await FireBaseCRUD.deleteHouse(
+                                    houseId: e.id);
+                                if (response != 200) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            content: Text(
+                                                response.message.toString()));
+                                      });
+                                }
+                              },
                             ),
                             title: Row(
                               children: [
@@ -229,14 +241,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       ElevatedButton(
                                         onPressed: () {
-                                         Navigator.pushAndRemoveUntil(
+                                          Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    report()),
+                                                builder: (context) => report()),
                                             (Route<dynamic> route) => false,
                                           );
-
                                         },
                                         child: Row(
                                           children: [

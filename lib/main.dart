@@ -1,8 +1,8 @@
 import 'package:batiment_application/crud/AddPanne.dart';
 import 'package:batiment_application/crud/infos.dart';
+import 'package:batiment_application/crud/report.dart';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:batiment_application/home/welcome.dart';
-import 'package:batiment_application/report.dart';
 import 'package:batiment_application/service/authService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';

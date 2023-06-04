@@ -35,4 +35,21 @@ class FireBaseCRUD {
     CollectionReference houseItemCollection = _collection;
     return houseItemCollection.snapshots();
   }
+
+  //delete data
+  static Future<Response> deleteHouse({
+    required String houseId,
+  }) async {
+    Response response = Response();
+    DocumentReference documentReference = _collection.doc(houseId);
+
+    await documentReference.delete().whenComplete(() {
+      response.code = 200;
+      response.message = "Successfully Deleted House";
+    }).catchError((e) {
+      response.code = 500;
+      response.message = e.message;
+    });
+    return response;
+  }
 }
