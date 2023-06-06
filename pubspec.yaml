@@ -54,14 +54,12 @@ dependencies:
   speech_to_text: ^6.1.1
   microphone: ^0.1.0
   just_audio: ^0.9.33
-  pdf: ^3.10.4
-  printing: ^5.11.0
   smooth_page_indicator: ^1.1.0
+  pdf: ^3.10.1
+  printing: ^5.10.4
   avatar_glow: ^2.0.2
-  highlight: ^0.7.0
   highlight_text: ^1.6.0
   flutter_deep_speech: ^0.0.3
-  
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
