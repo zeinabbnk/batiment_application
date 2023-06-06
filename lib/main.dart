@@ -1,3 +1,4 @@
+import 'package:batiment_application/Speechtotext.dart';
 import 'package:batiment_application/crud/AddPanne.dart';
 import 'package:batiment_application/crud/infos.dart';
 import 'package:batiment_application/crud/report.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 import 'auth/login_page.dart';
 
@@ -49,8 +51,8 @@ class MyApp extends StatelessWidget {
         "homepage": (context) => HomePage(),
         "infohome": (context) => infoHome(),
         "AddPanne": (context) => AddPanne(),
+        "speechtotext":(context) => SpeechScreen(),
         "Report":(context) => report(),
-        "showPanne":(context) => showPanne(),
       },
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:batiment_application/Speechtotext.dart';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:batiment_application/models/panneModel.dart';
 import 'package:batiment_application/service/dataService2.dart';
@@ -444,13 +445,48 @@ class _AddPanneState extends State<AddPanne> {
                                       ),
                                     ],
                                   ),
+                                  
                                   style: ElevatedButton.styleFrom(
                                       primary: Color(0xFF356762),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10))),
                                 ),
+                              
                               ),
+                              ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SpeechScreen()),
+                                            (Route<dynamic> route) => false,
+                                          );
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons
+                                                .text_format),
+                                            SizedBox(
+                                              width: 40,
+                                             ),
+                                            Text(
+                                              "SpeechToText",
+                                               style: TextStyle(fontSize: 18,
+                                               fontWeight: FontWeight.bold,),
+                                            ),
+                                            
+                                          ],
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Color(0xFF356762),
+                                             shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10))),
+                                      ),
+
+
                             ]),
                       )
                     ]),
