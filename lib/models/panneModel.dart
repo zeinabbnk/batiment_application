@@ -1,4 +1,6 @@
-class Panne {
+ 
+ 
+ class Panne {
 <<<<<<< HEAD
   String? typePanne, PanneImage, AutioText;
 =======
