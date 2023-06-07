@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:batiment_application/models/panneModel.dart';
 import 'package:batiment_application/service/dataService2.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
@@ -14,6 +15,10 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:highlight_text/highlight_text.dart';
+
+import 'package:batiment_application/service/dataService2.dart';
+
+
 
 class AddPanne extends StatefulWidget {
   const AddPanne({super.key});
@@ -101,15 +106,15 @@ class _AddPanneState extends State<AddPanne> {
   }
 
 //upload Data
-  void uploadData(AudioFile, imageFile, typePanne) async {
+  void uploadData(imageUrl, typePanne) async {
     if (keyForm.currentState!.validate()) {
       BDPanne _db = BDPanne();
-      String _ImageURL = await _db.uploadImage(imageFile);
-      String _AudiuURL = await _db.uploadAudio(AudioFile);
+      String _ImageURL = await _db.uploadImage(imageUrl);
+
       _db.addPanne(Panne(
         PanneImage: _ImageURL,
-        PanneAudio: _AudiuURL,
         typePanne: typePanne,
+        
       ));
       showDialog(
           context: context,
@@ -193,7 +198,7 @@ class _AddPanneState extends State<AddPanne> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => uploadData(AudioFile, imageFile, typePanne),
+        onPressed: () => uploadData(imageFile, typePanne),
         backgroundColor: Color(0xFF95af50),
         child: Icon(
           Icons.upload,
@@ -479,6 +484,17 @@ class _AddPanneState extends State<AddPanne> {
                                   ),
                                 ),
                               ),
+                              Container(
+                                child: IconButton(
+                                  icon: Icon(Icons.save),
+                                  onPressed: () async {
+                                    await saveTextToFirebase(_text);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('✓   Text saved')),
+                                    );
+                                  },
+                                ),
+                              ),
                             ]),
                       )
                     ]),
@@ -504,4 +520,53 @@ class _AddPanneState extends State<AddPanne> {
       ),
     );
   }
+
+  Future<void> saveTextToFirebase(String text) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Save the text to Firebase Firestore
+      await firestore.collection('Pannes').add({
+        'text': _text,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      // Text saved successfully
+      print('Text saved to Firebase Firestore.');
+    } catch (e) {
+      // Error occurred while saving the text
+      print('Failed to save text to Firebase Firestore: $e');
+    }
+  }
+
+
+
+void getDocumentsInSubcollection() {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // Référence à la collection principale
+  CollectionReference pannesCollection = firestore.collection('transcriptions');
+
+  // Référence à la sous-collection spécifique
+  CollectionReference sousCollection = pannesCollection.doc('__text').collection('__text');
+
+  // Obtenir tous les documents dans la sous-collection
+  sousCollection.get().then((QuerySnapshot querySnapshot) {
+    querySnapshot.docs.forEach((DocumentSnapshot document) {
+      if (document.exists) {
+        // Le document existe dans la sous-collection
+        Object? data = document.data();
+        // Faites quelque chose avec les données du document
+        print('Document ID: ${document.id}, Data: $data');
+      }
+    });
+}).catchError((error) {
+    // Erreur lors de la récupération des documents de la sous-collection
+    print('Erreur lors de la récupération des documents de la sous-collection: $error');
+  });
+}
+
+
+
+
 }
