@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:batiment_application/home/HomePage.dart';
-import 'package:batiment_application/models/panneModel.dart';
-import 'package:batiment_application/service/dataService2.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:image_picker/image_picker.dart';
@@ -102,6 +103,49 @@ class _AddPanneState extends State<AddPanne> {
   }
 
 //upload Data
+  Future<void> saveDataToFirebase(
+      String text, String typePanne, Uint8List imageBytes) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      firebase_storage.FirebaseStorage storage =
+          firebase_storage.FirebaseStorage.instance;
+
+      // Upload the image to Firebase Storage
+      String imageUrl = await uploadImageToStorage(storage, imageBytes);
+
+      // Save the image URL, text, and type de panne to Firebase Firestore
+      await firestore.collection('Pannes').add({
+        'text': text,
+        'typePanne': typePanne,
+        'imageUrl': imageUrl,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      // Data saved successfully
+      print('Data saved to Firebase Firestore.');
+    } catch (e) {
+      // Error occurred while saving the data
+      print('Failed to save data to Firebase Firestore: $e');
+    }
+  }
+
+  Future<String> uploadImageToStorage(
+      firebase_storage.FirebaseStorage storage, Uint8List imageBytes) async {
+    // Generate a unique filename for the image
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+    // Create a reference to the image file in Firebase Storage
+    firebase_storage.Reference ref =
+        storage.ref().child('images/$fileName.jpg');
+
+    // Upload the image file
+    await ref.putData(imageBytes);
+
+    // Get the download URL of the uploaded image
+    String imageUrl = await ref.getDownloadURL();
+
+    return imageUrl;
+  }
   // void uploadData(text, imageFile, typePanne) async {
   //   if (keyForm.currentState!.validate()) {
   //     BDPanne _db = BDPanne();
@@ -112,15 +156,15 @@ class _AddPanneState extends State<AddPanne> {
   //       typePanne: typePanne,
   //       AutioText: text,
   //     ));
-  //       AwesomeDialog(
-  //           context: context,
-  //           dialogType: DialogType.success,
-  //           animType: AnimType.rightSlide,
-  //           title: 'Save',
-  //           desc: "Informations Saved",
-  //           btnCancelOnPress: () {},
-  //           btnOkOnPress: () {},
-  //         )..show();
+  //     AwesomeDialog(
+  //       context: context,
+  //       dialogType: DialogType.success,
+  //       animType: AnimType.rightSlide,
+  //       title: 'Save',
+  //       desc: "Informations Saved",
+  //       btnCancelOnPress: () {},
+  //       btnOkOnPress: () {},
+  //     )..show();
   //   }
   // }
 
@@ -200,10 +244,23 @@ class _AddPanneState extends State<AddPanne> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          
+        onPressed: () async {
+          Uint8List imageBytes = getImageBytes(); // Obtain the image bytes
+          String textFieldData =
+              _text; // Assuming _text holds the text field data
+          String _typePanne = typePanne;
+          await saveDataToFirebase(textFieldData, _typePanne,
+              imageBytes); // Pass the typePanne variable
+  AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.success,
+                                    animType: AnimType.rightSlide,
+                                    title: 'Save',
+                                    desc:'Informations Saved',
+                                    btnCancelOnPress: () {},
+                                    btnOkOnPress: () {},
+                                  )..show();
           // uploadData(_text, imageFile, typePanne);
-        
         },
         backgroundColor: Color(0xFF95af50),
         child: Icon(
@@ -399,6 +456,43 @@ class _AddPanneState extends State<AddPanne> {
                                 ),
                               ),
                             ),
+                            Container(
+                              margin: EdgeInsets.only(top: 15, bottom: 15),
+                              child: Form(
+                                key: keyForm,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 20),
+                                  child: TextFormField(
+                                    // controller: _PanneController,
+                                    cursorColor: Color(0xFFedf4f4),
+                                    decoration: InputDecoration(
+                                      hintMaxLines: 1,
+                                      labelText: "Type de Panne",
+                                      labelStyle: TextStyle(
+                                          color: Color(0xFF2B3467),
+                                          fontWeight: FontWeight.bold),
+                                      prefixIcon: Icon(Icons.roofing,
+                                          color: Color(0xFF2B3467)),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                              color: Color(0xFFedf4f4),
+                                              width: 3)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                              color: Color(0xFFedf4f4),
+                                              width: 3)),
+                                    ),
+                                    onChanged: (value) => typePanne = value,
+                                    validator: (value) =>
+                                        typePanne == '|' ? Erreur : null,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -412,44 +506,6 @@ class _AddPanneState extends State<AddPanne> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                margin: EdgeInsets.only(top: 15, bottom: 15),
-                                child: Form(
-                                  key: keyForm,
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: TextFormField(
-                                      // controller: _PanneController,
-                                      cursorColor: Color(0xFFedf4f4),
-                                      decoration: InputDecoration(
-                                        hintMaxLines: 1,
-                                        labelText: "Type de Panne",
-                                        labelStyle: TextStyle(
-                                            color: Color(0xFF2B3467),
-                                            fontWeight: FontWeight.bold),
-                                        prefixIcon: Icon(Icons.roofing,
-                                            color: Color(0xFF2B3467)),
-                                        enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: BorderSide(
-                                                color: Color(0xFFedf4f4),
-                                                width: 3)),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: BorderSide(
-                                                color: Color(0xFFedf4f4),
-                                                width: 3)),
-                                      ),
-                                      onChanged: (value) => typePanne = value,
-                                      validator: (value) =>
-                                          typePanne == '|' ? Erreur : null,
-                                    ),
-                                  ),
-                                ),
-                              ),
                               Text(
                                 "Recorder un Audio",
                                 style: TextStyle(
@@ -461,7 +517,7 @@ class _AddPanneState extends State<AddPanne> {
                               SingleChildScrollView(
                                 reverse: true,
                                 child: Container(
-                                  // padding: EdgeInsets.only(bottom: 80),
+                                  padding: EdgeInsets.only(bottom: 80),
                                   child: TextHighlight(
                                     text: _isListening
                                         ? _text
@@ -523,4 +579,8 @@ class _AddPanneState extends State<AddPanne> {
       ),
     );
   }
+}
+
+Uint8List getImageBytes() {
+  return Uint8List(0);
 }
