@@ -102,27 +102,27 @@ class _AddPanneState extends State<AddPanne> {
   }
 
 //upload Data
-  void uploadData(_text, imageFile, typePanne) async {
-    if (keyForm.currentState!.validate()) {
-      BDPanne _db = BDPanne();
-      String _ImageURL = await _db.uploadImage(imageFile);
-      String Commentaire = _text;
-      _db.addPanne(Panne(
-        PanneImage: _ImageURL,
-        typePanne: typePanne,
-        AutioText: Commentaire,
-      ));
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.success,
-        animType: AnimType.rightSlide,
-        title: 'Save',
-        desc: "Informations Saved",
-        btnCancelOnPress: () {},
-        btnOkOnPress: () {},
-      )..show();
-    }
-  }
+  // void uploadData(text, imageFile, typePanne) async {
+  //   if (keyForm.currentState!.validate()) {
+  //     BDPanne _db = BDPanne();
+  //     String _ImageURL = await _db.uploadImage(imageFile);
+
+  //     _db.addPanne(Panne(
+  //       PanneImage: _ImageURL,
+  //       typePanne: typePanne,
+  //       AutioText: text,
+  //     ));
+  //       AwesomeDialog(
+  //           context: context,
+  //           dialogType: DialogType.success,
+  //           animType: AnimType.rightSlide,
+  //           title: 'Save',
+  //           desc: "Informations Saved",
+  //           btnCancelOnPress: () {},
+  //           btnOkOnPress: () {},
+  //         )..show();
+  //   }
+  // }
 
   //Page Controller
   final _cotroller = PageController();
@@ -201,7 +201,9 @@ class _AddPanneState extends State<AddPanne> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          uploadData(_text, imageFile, typePanne);
+          
+          // uploadData(_text, imageFile, typePanne);
+        
         },
         backgroundColor: Color(0xFF95af50),
         child: Icon(
