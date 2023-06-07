@@ -1,4 +1,4 @@
-// import 'package:batiment_application/Speechtotext.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:batiment_application/crud/report.dart';
 import 'package:batiment_application/models/House.dart';
 import 'package:batiment_application/service/FireBaseCRUD.dart';
@@ -133,14 +133,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               onPressed: () async {
                                 var response = await FireBaseCRUD.deleteHouse(
                                     houseId: e.id);
-                                if (response != 200) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                            content: Text(
-                                                response.message.toString()));
-                                      });
+                                if (response.code == 200) {
+                                  AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.success,
+                                    animType: AnimType.rightSlide,
+                                    title: 'Informations Deleted',
+                                    desc: response.message.toString(),
+                                    btnCancelOnPress: () {},
+                                    btnOkOnPress: () {},
+                                  )..show();
                                 }
                               },
                             ),

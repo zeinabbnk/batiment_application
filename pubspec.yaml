@@ -60,6 +60,7 @@ dependencies:
   avatar_glow: ^2.0.2
   highlight_text: ^1.6.0
   flutter_deep_speech: ^0.0.3
+  awesome_dialog: ^3.1.0
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"

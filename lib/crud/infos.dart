@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../auth/login_page.dart';
 
@@ -217,26 +218,26 @@ class _infoHomeState extends State<infoHome> {
                                 Adress: AdressController.text,
                                 TypeBatiment: typeBController.text,
                                 NumEtage: EtagesController.text);
-                            if (response.code != 200) {
-                              showDialog(
+                            if (response.code == 200) {
+                              AwesomeDialog(
                                 context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: Text(response.message.toString()),
-                                  );
-                                },
-                              );
+                                dialogType: DialogType.success,
+                                animType: AnimType.rightSlide,
+                                title: 'Informations Saved',
+                                desc: response.message.toString(),
+                                btnCancelOnPress: () {},
+                                btnOkOnPress: () {},
+                              )..show();
                             } else {
-                              showDialog(
+                              AwesomeDialog(
                                 context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: Text(
-                                      response.message.toString(),
-                                    ),
-                                  );
-                                },
-                              );
+                                dialogType: DialogType.error,
+                                animType: AnimType.rightSlide,
+                                title: 'Save Failed',
+                                desc: response.message.toString(),
+                                btnCancelOnPress: () {},
+                                btnOkOnPress: () {},
+                              )..show();
                             }
                           }
                           ;

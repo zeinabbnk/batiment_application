@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:batiment_application/models/panneModel.dart';
 import 'package:batiment_application/service/dataService2.dart';
@@ -101,21 +102,25 @@ class _AddPanneState extends State<AddPanne> {
   }
 
 //upload Data
-  void uploadData(AudioFile, imageFile, typePanne) async {
+  void uploadData(_text, imageFile, typePanne) async {
     if (keyForm.currentState!.validate()) {
       BDPanne _db = BDPanne();
       String _ImageURL = await _db.uploadImage(imageFile);
-      String _AudiuURL = await _db.uploadAudio(AudioFile);
+      String Commentaire = _text;
       _db.addPanne(Panne(
         PanneImage: _ImageURL,
-        PanneAudio: _AudiuURL,
         typePanne: typePanne,
+        AutioText: Commentaire,
       ));
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(content: Text("Informations Enregistrées"));
-          });
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        animType: AnimType.rightSlide,
+        title: 'Save',
+        desc: "Informations Saved",
+        btnCancelOnPress: () {},
+        btnOkOnPress: () {},
+      )..show();
     }
   }
 
@@ -163,8 +168,10 @@ class _AddPanneState extends State<AddPanne> {
 
   late stt.SpeechToText _speech;
   bool _isListening = false;
-  String _text = 'Press the button and start speaking';
+  String _text = '';
+  // String commentaire = '';
   double _confidence = 1.0;
+
   //listen function
   void _Listen() async {
     if (!_isListening) {
@@ -193,7 +200,9 @@ class _AddPanneState extends State<AddPanne> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => uploadData(AudioFile, imageFile, typePanne),
+        onPressed: () {
+          uploadData(_text, imageFile, typePanne);
+        },
         backgroundColor: Color(0xFF95af50),
         child: Icon(
           Icons.upload,
@@ -328,19 +337,22 @@ class _AddPanneState extends State<AddPanne> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
                               "Ajouter une Photo",
                               style: TextStyle(
                                   fontSize: 27, fontWeight: FontWeight.w600),
                             ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             //take Picture
                             imageFile != null
                                 ? Image.file(
                                     imageFile!,
-                                    width: 250,
-                                    height: 250,
+                                    width: 200,
+                                    height: 200,
                                     fit: BoxFit.cover,
                                   )
                                 : Image.asset(
@@ -349,9 +361,9 @@ class _AddPanneState extends State<AddPanne> {
                                     width: 200,
                                     color: Color(0xFFedf4f4),
                                   ),
-                            // SizedBox(
-                            //   height: 10,
-                            // ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Container(
                               margin: EdgeInsets.symmetric(horizontal: 60),
                               alignment: Alignment.center,
@@ -385,43 +397,6 @@ class _AddPanneState extends State<AddPanne> {
                                 ),
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(top: 50),
-                              child: Form(
-                                key: keyForm,
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 20),
-                                  child: TextFormField(
-                                    // controller: _PanneController,
-                                    cursorColor: Color(0xFFedf4f4),
-                                    decoration: InputDecoration(
-                                      hintMaxLines: 1,
-                                      labelText: "Type de Panne",
-                                      labelStyle: TextStyle(
-                                          color: Color(0xFF2B3467),
-                                          fontWeight: FontWeight.bold),
-                                      prefixIcon: Icon(Icons.roofing,
-                                          color: Color(0xFF2B3467)),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFFedf4f4),
-                                              width: 3)),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFFedf4f4),
-                                              width: 3)),
-                                    ),
-                                    onChanged: (value) => typePanne = value,
-                                    validator: (value) =>
-                                        typePanne == '|' ? Erreur : null,
-                                  ),
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -435,6 +410,44 @@ class _AddPanneState extends State<AddPanne> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 15, bottom: 15),
+                                child: Form(
+                                  key: keyForm,
+                                  child: Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: TextFormField(
+                                      // controller: _PanneController,
+                                      cursorColor: Color(0xFFedf4f4),
+                                      decoration: InputDecoration(
+                                        hintMaxLines: 1,
+                                        labelText: "Type de Panne",
+                                        labelStyle: TextStyle(
+                                            color: Color(0xFF2B3467),
+                                            fontWeight: FontWeight.bold),
+                                        prefixIcon: Icon(Icons.roofing,
+                                            color: Color(0xFF2B3467)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: BorderSide(
+                                                color: Color(0xFFedf4f4),
+                                                width: 3)),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: BorderSide(
+                                                color: Color(0xFFedf4f4),
+                                                width: 3)),
+                                      ),
+                                      onChanged: (value) => typePanne = value,
+                                      validator: (value) =>
+                                          typePanne == '|' ? Erreur : null,
+                                    ),
+                                  ),
+                                ),
+                              ),
                               Text(
                                 "Recorder un Audio",
                                 style: TextStyle(
@@ -446,9 +459,11 @@ class _AddPanneState extends State<AddPanne> {
                               SingleChildScrollView(
                                 reverse: true,
                                 child: Container(
-                                  padding: EdgeInsets.only(bottom: 80),
+                                  // padding: EdgeInsets.only(bottom: 80),
                                   child: TextHighlight(
-                                    text: _text,
+                                    text: _isListening
+                                        ? _text
+                                        : "Press the button and start speaking",
                                     words: _highlights,
                                     textStyle: const TextStyle(
                                       fontSize: 20.0,
@@ -461,7 +476,9 @@ class _AddPanneState extends State<AddPanne> {
                               ),
                               Container(
                                 child: GestureDetector(
-                                  onTap: () => _Listen(),
+                                  onTap: () {
+                                    _Listen();
+                                  },
                                   child: AvatarGlow(
                                     animate: _isListening,
                                     glowColor: Color(0xFF356762),
