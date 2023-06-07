@@ -1,9 +1,9 @@
 class Panne {
-  String? typePanne, PanneImage , PanneAudio;
+  String? typePanne, PanneImage , PanneText;
 
   Panne({
     this.PanneImage,
-    this.PanneAudio,
+    this.PanneText,
     this.typePanne,
   });
 }

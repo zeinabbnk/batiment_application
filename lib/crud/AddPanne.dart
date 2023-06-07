@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:batiment_application/models/panneModel.dart';
-import 'package:batiment_application/service/dataService2.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +17,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:highlight_text/highlight_text.dart';
-
-import 'package:batiment_application/service/dataService2.dart';
 
 
 
@@ -34,6 +34,12 @@ class _AddPanneState extends State<AddPanne> {
   String Erreur = 'Veuillez Entrer les informations';
 
   final picker = ImagePicker();
+  Uint8List getImageBytes() {
+    // Replace this with your own method to obtain the image data as a Uint8List
+    // Example: read an image file and convert it to Uint8List
+    // ...
+    return Uint8List(0);
+  }
 
   //take picture
   File? imageFile;
@@ -106,23 +112,7 @@ class _AddPanneState extends State<AddPanne> {
   }
 
 //upload Data
-  void uploadData(imageUrl, typePanne) async {
-    if (keyForm.currentState!.validate()) {
-      BDPanne _db = BDPanne();
-      String _ImageURL = await _db.uploadImage(imageUrl);
-
-      _db.addPanne(Panne(
-        PanneImage: _ImageURL,
-        typePanne: typePanne,
-        
-      ));
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(content: Text("Informations Enregistrées"));
-          });
-    }
-  }
+ 
 
   //Page Controller
   final _cotroller = PageController();
@@ -197,14 +187,7 @@ class _AddPanneState extends State<AddPanne> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => uploadData(imageFile, typePanne),
-        backgroundColor: Color(0xFF95af50),
-        child: Icon(
-          Icons.upload,
-          size: 30,
-        ),
-      ),
+      
       body: SafeArea(
         child: Stack(
           alignment: Alignment.center,
@@ -488,9 +471,20 @@ class _AddPanneState extends State<AddPanne> {
                                 child: IconButton(
                                   icon: Icon(Icons.save),
                                   onPressed: () async {
-                                    await saveTextToFirebase(_text);
+                                    Uint8List imageBytes =
+                                        getImageBytes(); // Obtain the image bytes
+                                    String textFieldData =
+                                        _text; // Assuming _text holds the text field data
+
+                                    await saveDataToFirebase(
+                                        textFieldData,
+                                        typePanne,
+                                        imageBytes); // Pass the typePanne variable
+
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('✓   Text saved')),
+                                      SnackBar(
+                                          content: Text(
+                                              '✓ Text, Image, and Type de panne saved')),
                                     );
                                   },
                                 ),
@@ -521,52 +515,47 @@ class _AddPanneState extends State<AddPanne> {
     );
   }
 
-  Future<void> saveTextToFirebase(String text) async {
+  Future<void> saveDataToFirebase(
+      String text, String typePanne, Uint8List imageBytes) async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
+      firebase_storage.FirebaseStorage storage =
+          firebase_storage.FirebaseStorage.instance;
 
-      // Save the text to Firebase Firestore
-      await firestore.collection('Pannes').add({
-        'text': _text,
+      // Upload the image to Firebase Storage
+      String imageUrl = await uploadImageToStorage(storage, imageBytes);
+
+      // Save the image URL, text, and type de panne to Firebase Firestore
+      await firestore.collection('transcriptions').add({
+        'text': text,
+        'typePanne': typePanne,
+        'imageUrl': imageUrl,
         'timestamp': FieldValue.serverTimestamp(),
       });
 
-      // Text saved successfully
-      print('Text saved to Firebase Firestore.');
+      // Data saved successfully
+      print('Data saved to Firebase Firestore.');
     } catch (e) {
-      // Error occurred while saving the text
-      print('Failed to save text to Firebase Firestore: $e');
+      // Error occurred while saving the data
+      print('Failed to save data to Firebase Firestore: $e');
     }
   }
 
+  Future<String> uploadImageToStorage(
+      firebase_storage.FirebaseStorage storage, Uint8List imageBytes) async {
+    // Generate a unique filename for the image
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
 
+    // Create a reference to the image file in Firebase Storage
+    firebase_storage.Reference ref =
+        storage.ref().child('images/$fileName.jpg');
 
-void getDocumentsInSubcollection() {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+    // Upload the image file
+    await ref.putData(imageBytes);
 
-  // Référence à la collection principale
-  CollectionReference pannesCollection = firestore.collection('transcriptions');
+    // Get the download URL of the uploaded image
+    String imageUrl = await ref.getDownloadURL();
 
-  // Référence à la sous-collection spécifique
-  CollectionReference sousCollection = pannesCollection.doc('__text').collection('__text');
-
-  // Obtenir tous les documents dans la sous-collection
-  sousCollection.get().then((QuerySnapshot querySnapshot) {
-    querySnapshot.docs.forEach((DocumentSnapshot document) {
-      if (document.exists) {
-        // Le document existe dans la sous-collection
-        Object? data = document.data();
-        // Faites quelque chose avec les données du document
-        print('Document ID: ${document.id}, Data: $data');
-      }
-    });
-}).catchError((error) {
-    // Erreur lors de la récupération des documents de la sous-collection
-    print('Erreur lors de la récupération des documents de la sous-collection: $error');
-  });
-}
-
-
-
-
+    return imageUrl;
+  }
 }
