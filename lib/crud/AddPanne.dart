@@ -251,15 +251,15 @@ class _AddPanneState extends State<AddPanne> {
           String _typePanne = typePanne;
           await saveDataToFirebase(textFieldData, _typePanne,
               imageBytes); // Pass the typePanne variable
-  AwesomeDialog(
-                                    context: context,
-                                    dialogType: DialogType.success,
-                                    animType: AnimType.rightSlide,
-                                    title: 'Save',
-                                    desc:'Informations Saved',
-                                    btnCancelOnPress: () {},
-                                    btnOkOnPress: () {},
-                                  )..show();
+          AwesomeDialog(
+            context: context,
+            dialogType: DialogType.success,
+            animType: AnimType.rightSlide,
+            title: 'Save',
+            desc: 'Informations Saved',
+            btnCancelOnPress: () {},
+            btnOkOnPress: () {},
+          )..show();
           // uploadData(_text, imageFile, typePanne);
         },
         backgroundColor: Color(0xFF95af50),
@@ -352,8 +352,15 @@ class _AddPanneState extends State<AddPanne> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 50),
+                              child: Icon(
+                                Icons.library_add_rounded,
+                                size: 80,
+                                color: Color(0xFFeaf1f3),
+                              ),
+                            ),
                             Text(
                               "Ajouter Maquette",
                               style: TextStyle(
@@ -361,7 +368,9 @@ class _AddPanneState extends State<AddPanne> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            // SizedBox(height: 80,),
+                            SizedBox(
+                              height: 80,
+                            ),
                             Container(
                               margin: EdgeInsets.symmetric(horizontal: 60),
                               child: ElevatedButton(
@@ -396,7 +405,7 @@ class _AddPanneState extends State<AddPanne> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
                               "Ajouter une Photo",

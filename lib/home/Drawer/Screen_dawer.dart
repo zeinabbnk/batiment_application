@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:batiment_application/crud/infos.dart';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -139,12 +140,21 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
           ),
           InkWell(
             onTap: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-                (Route<dynamic> route) => false,
-              );
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.warning,
+                animType: AnimType.rightSlide,
+                title: 'Are You Sure',
+                btnCancelOnPress: () {},
+                btnOkOnPress: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    (Route<dynamic> route) => false,
+                  );
+                },
+              )..show();
             },
             child: Row(
               children: <Widget>[

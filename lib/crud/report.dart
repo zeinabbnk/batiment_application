@@ -1,7 +1,6 @@
 import 'package:batiment_application/crud/showPanne.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

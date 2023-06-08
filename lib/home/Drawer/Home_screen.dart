@@ -3,8 +3,15 @@ import 'package:batiment_application/crud/report.dart';
 import 'package:batiment_application/models/House.dart';
 import 'package:batiment_application/service/FireBaseCRUD.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 import '../../crud/AddPanne.dart';
 
@@ -22,6 +29,87 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isDrawerOpen = false;
   CollectionReference Houses = FirebaseFirestore.instance.collection('House');
   final Stream<QuerySnapshot> refHouse = FireBaseCRUD.showHouse();
+
+//generer un pdf
+// initialiser
+
+  Future<void> main() async {
+    final panneCollection = FirebaseFirestore.instance.collection('Panne');
+    final maquetteCollection =
+        FirebaseFirestore.instance.collection('Maquette');
+
+    final panneSnapshot = await panneCollection.get();
+    final maquetteSnapshot = await maquetteCollection.get();
+
+    final panneDocuments = panneSnapshot.docs;
+    final maquetteDocuments = maquetteSnapshot.docs;
+
+    final pdfFile = await generatePDF(panneDocuments, maquetteDocuments);
+  }
+
+  //generer les données dans le pdf
+
+  Future<File> generatePDF(
+    List<DocumentSnapshot> panneDocuments,
+    List<DocumentSnapshot> maquetteDocuments,
+  ) async {
+    final pdf = pw.Document();
+
+    // Ajouter les données de la collection Panne au PDF
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Column(
+            children: [
+              for (var document in panneDocuments)
+                pw.Container(
+                  padding: pw.EdgeInsets.all(10),
+                  child: pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text('Type de Panne: ${document['typePanne']}'),
+                      pw.Text('Texte: ${document['text']}'),
+                      pw.Text('Image: ${document['image']}'),
+                    ],
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+    );
+
+    // Ajouter les données de la collection Maquette au PDF
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Column(
+            children: [
+              for (var document in maquetteDocuments)
+                pw.Container(
+                  padding: pw.EdgeInsets.all(10),
+                  child: pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text(
+                          'Titre de la Maquette: ${document['titreMaquette']}'),
+                      pw.Text('Numéro d\'étage: ${document['numEtage']}'),
+                      pw.Text('Image: ${document['image']}'),
+                    ],
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+    );
+
+    // Enregistrer le PDF dans un fichier
+    final output = File('Rapport.pdf');
+    await output.writeAsBytes(await pdf.save());
+
+    return output;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     : GestureDetector(
                         child: Icon(
                           Icons.menu,
+                          size: 25,
                           color: Color(0xFF356762),
                         ),
                         onTap: () {
