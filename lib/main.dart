@@ -1,3 +1,4 @@
+import 'package:batiment_application/auth/profil.dart';
 import 'package:batiment_application/auth/signup_page.dart';
 import 'package:batiment_application/crud/AddPanne.dart';
 import 'package:batiment_application/crud/infos.dart';
@@ -27,6 +28,7 @@ void main() async {
       StreamProvider<List<Maquette>>.value(
          initialData: [],
         value: DBMaquette().Maquettes,),
+        
     ],
     child: MyApp(),
   ));
@@ -57,6 +59,7 @@ class MyApp extends StatelessWidget {
         "AddPanne": (context) => AddPanne(),
         "Report": (context) => Rapport(),
         "signUp": (context) => SignUpPage(),
+        "profil":(context) => profilPage(),
       },
     );
   }

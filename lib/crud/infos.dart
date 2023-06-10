@@ -82,7 +82,7 @@ class _infoHomeState extends State<infoHome> {
                             color: Color(0xFFeaf1f3),
                           ),
                         ),
-                        Text("Adding House",
+                        Text("Ajouter Un Bâtiment",
                             style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,

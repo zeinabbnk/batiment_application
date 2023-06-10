@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: Color(0xFFedf4f4),
                             size: 25,
                           ),
-                          hintText: "Enter_Email",
+                          hintText: "Entrer_Email",
                           hintStyle:
                               TextStyle(fontSize: 12, color: Color(0xFFF6F1F1)),
                           enabledBorder: UnderlineInputBorder(
@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                       controller: passwordController,
                       obscureText: passToggle,
                       decoration: InputDecoration(
-                          labelText: "PassWord :",
+                          labelText: "Mot de Passe :",
                           labelStyle: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: Color(0xFFedf4f4),
                             size: 25,
                           ),
-                          hintText: "Enter_Pass_Word",
+                          hintText: "Entrer_Mot_Passe",
                           hintStyle:
                               TextStyle(fontSize: 12, color: Color(0xFFF6F1F1)),
                           suffix: InkWell(
@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                                   password: passwordController.text.trim());
                             },
                             child: const Text(
-                              'Log In',
+                              'Connexion',
                               style: TextStyle(
                                   fontSize: 15,
                                   color: Color(0xFFedf4f4),
@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Don't have an account?"),
+                      Text("Vous n'avez pas un Compte?"),
                       InkWell(
                         onTap: () {
                           Navigator.pushAndRemoveUntil(
@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         },
                         child: Text(
-                          "Create",
+                          "Créer",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),

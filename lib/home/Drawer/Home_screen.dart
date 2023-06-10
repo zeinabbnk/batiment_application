@@ -89,10 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                 SizedBox(
-                  width: 80,
+                  width: 50,
                 ),
                 Text(
-                  "Home Page",
+                  "Page d'Accueil",
                   style: TextStyle(
                     fontSize: 25,
                     color: Color(0xFF356762),

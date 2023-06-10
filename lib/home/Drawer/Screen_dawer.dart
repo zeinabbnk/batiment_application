@@ -1,9 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:batiment_application/auth/profil.dart';
 import 'package:batiment_application/crud/infos.dart';
 import 'package:batiment_application/crud/rapportScreen.dart';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../auth/login_page.dart';
 
@@ -54,7 +56,13 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => profilPage()),
+                    (Route<dynamic> route) => false,
+                  );
+                },
                 child: Row(
                   children: <Widget>[
                     Icon(
@@ -65,7 +73,7 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
                       width: 20,
                     ),
                     Text(
-                      "Profil",
+                      "Profile",
                       style: TextStyle(
                           color: Color(0xFF9fbdc2),
                           fontWeight: FontWeight.bold),
@@ -74,7 +82,7 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 30,
               ),
               InkWell(
                 onTap: () {
@@ -94,7 +102,7 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
                       width: 20,
                     ),
                     Text(
-                      "Add Home",
+                      "Ajout de Bâtiment",
                       style: TextStyle(
                           color: Color(0xFF9fbdc2),
                           fontWeight: FontWeight.bold),
@@ -103,7 +111,7 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 30,
               ),
               InkWell(
                 onTap: () {
@@ -123,7 +131,7 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
                       width: 20,
                     ),
                     Text(
-                      "Home Page",
+                      "Page d'Accueil",
                       style: TextStyle(
                           color: Color(0xFF9fbdc2),
                           fontWeight: FontWeight.bold),
@@ -164,10 +172,10 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
                   color: Color(0xFF9fbdc2),
                 ),
                 SizedBox(
-                  width: 20,
+                  width: 15,
                 ),
                 Text(
-                  "Log Out",
+                  "Déconnexion",
                   style: TextStyle(
                       color: Color(0xFF9fbdc2), fontWeight: FontWeight.bold),
                 )

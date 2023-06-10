@@ -139,7 +139,7 @@ class _RapportState extends State<Rapport> {
                                 );
                               },
                               child: Text(
-                                "Consultaion des Maquette",
+                                "Consultaion des Maquettes",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     color: Color(0xFF95af50)),

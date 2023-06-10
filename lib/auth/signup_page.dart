@@ -57,7 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: Color(0xFFedf4f4),
                             size: 25,
                           ),
-                          hintText: "Enter_Email",
+                          hintText: "Entrer_Email",
                           hintStyle:
                               TextStyle(fontSize: 12, color: Color(0xFFF6F1F1)),
                           enabledBorder: UnderlineInputBorder(
@@ -75,7 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: passwordController,
                       obscureText: passToggle,
                       decoration: InputDecoration(
-                          labelText: "PassWord :",
+                          labelText: "Mor de Passe :",
                           labelStyle: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -85,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: Color(0xFFedf4f4),
                             size: 25,
                           ),
-                          hintText: "Enter_Pass_Word",
+                          hintText: "Entrer_Mot_Passe",
                           hintStyle:
                               TextStyle(fontSize: 12, color: Color(0xFFF6F1F1)),
                           suffix: InkWell(
@@ -127,7 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       password: passwordController.text.trim());
                             },
                             child: const Text(
-                              'Sign Up',
+                              "S'Inscrire",
                               style: TextStyle(
                                   fontSize: 15,
                                   color: Color(0xFFedf4f4),
@@ -144,7 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         (Route<dynamic> route) => false,
                       );
                     },
-                    child: Text("Have an Account", style: TextStyle(fontWeight: FontWeight.w600),),
+                    child: Text("Vous Avez déjà un Compte", style: TextStyle(fontWeight: FontWeight.w600),),
                   )
                 ],
               ),

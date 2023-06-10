@@ -399,7 +399,7 @@ class _AddPanneState extends State<AddPanne> {
                                     //   width: 10,
                                     // ),
                                     Text(
-                                      'Take Picture',
+                                      'Prendre Photo',
                                       style: TextStyle(
                                           fontSize: 15,
                                           // color: Color(0xFF2B3467),
@@ -479,7 +479,7 @@ class _AddPanneState extends State<AddPanne> {
                                   child: TextHighlight(
                                     text: _isListening
                                         ? _text
-                                        : "Press the button and start speaking",
+                                        : "Appuyez sur le bouton et commencez à parler",
                                     words: _highlights,
                                     textStyle: const TextStyle(
                                       fontSize: 20.0,
