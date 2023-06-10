@@ -194,23 +194,22 @@ class _AddPanneState extends State<AddPanne> {
           String _typePanne = typePanne;
           await ajoutPanne(textFieldData, _typePanne,
               imageBytes); // Pass the typePanne variable
-          await AwesomeDialog(
+          AwesomeDialog(
             context: context,
             dialogType: DialogType.success,
             animType: AnimType.rightSlide,
             title: 'Save',
             desc: 'Informations Saved',
             btnCancelOnPress: () {},
-            btnOkOnPress: () {},
-          )
-            ..show();
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Rapport(),
-            ),
-          );
+            btnOkOnPress: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Rapport(),
+                ),
+              );
+            },
+          )..show();
         },
         backgroundColor: Color(0xFF95af50),
         child: Icon(
