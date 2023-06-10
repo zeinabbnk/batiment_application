@@ -39,7 +39,7 @@ class _welcomeState extends State<welcome> {
               ),
             ),
             Text(
-              "Let's Us Guide You",
+              "Let Us Guide You",
               style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,

@@ -1,15 +1,15 @@
-import 'package:batiment_application/auth/signup_page.dart';
+import 'package:batiment_application/auth/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool passToggle = true;
@@ -41,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 15,
                   ),
+                  
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
@@ -120,12 +121,13 @@ class _LoginPageState extends State<LoginPage> {
                                   borderRadius: BorderRadius.circular(10)),
                             ),
                             onPressed: () {
-                              FirebaseAuth.instance.signInWithEmailAndPassword(
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim());
+                              FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                      email: emailController.text.trim(),
+                                      password: passwordController.text.trim());
                             },
                             child: const Text(
-                              'Log In',
+                              'Sign Up',
                               style: TextStyle(
                                   fontSize: 15,
                                   color: Color(0xFFedf4f4),
@@ -134,40 +136,18 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 18,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Don't have an account?"),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpPage()),
-                            (Route<dynamic> route) => false,
-                          );
-                        },
-                        child: Text(
-                          "Create",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                      )
-                    ],
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        (Route<dynamic> route) => false,
+                      );
+                    },
+                    child: Text("Have an Account", style: TextStyle(fontWeight: FontWeight.w600),),
                   )
                 ],
               ),
             )));
-  }
-
-  // Dispose Methode
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
   }
 }

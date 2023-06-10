@@ -3,7 +3,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../models/maquetteModel.dart';
 
-
 class DBMaquette {
 //déclaration et initialisation de la maquette
   CollectionReference _maquette =
@@ -26,8 +25,22 @@ class DBMaquette {
       "NumEtage": maq.NumE,
       "Maquette": maq.MaqURLImage,
       "MaquetteId": maq.MaquetteId,
+      "Time": FieldValue.serverTimestamp(),
+    });
+  }
+
+//récupération des maquette
+  Stream<List<Maquette>> get Maquettes {
+    Query queryMaquette = _maquette.orderBy('Time', descending: true);
+    return queryMaquette.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Maquette(
+          MaquetteId: doc.id,
+          titre: doc.get('Titre'),
+          NumE: doc.get('NumEtage'),
+          MaqURLImage: doc.get('Maquette'),
+        );
+      }).toList();
     });
   }
 }
-
-

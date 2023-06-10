@@ -1,9 +1,12 @@
+import 'package:batiment_application/auth/signup_page.dart';
 import 'package:batiment_application/crud/AddPanne.dart';
 import 'package:batiment_application/crud/infos.dart';
 import 'package:batiment_application/crud/report.dart';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:batiment_application/home/welcome.dart';
+import 'package:batiment_application/models/maquetteModel.dart';
 import 'package:batiment_application/service/authService.dart';
+import 'package:batiment_application/service/dataService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +23,10 @@ void main() async {
       StreamProvider.value(
         initialData: null,
         value: AuthService().user,
-      )
+      ),
+      StreamProvider<List<Maquette>>.value(
+         initialData: [],
+        value: DBMaquette().Maquettes,),
     ],
     child: MyApp(),
   ));
@@ -43,12 +49,14 @@ class MyApp extends StatelessWidget {
           }
         },
       ),
+      
       routes: {
         "welcome": (context) => welcome(),
         "homepage": (context) => HomePage(),
         "infohome": (context) => infoHome(),
         "AddPanne": (context) => AddPanne(),
-        "Report": (context) => report(),
+        "Report": (context) => Rapport(),
+        "signUp": (context) => SignUpPage(),
       },
     );
   }

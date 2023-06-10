@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:batiment_application/crud/report.dart';
+
 import 'package:batiment_application/home/HomePage.dart';
+import 'package:batiment_application/service/FireBaseCRUD.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -16,6 +19,10 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:highlight_text/highlight_text.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/pdf.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class AddPanne extends StatefulWidget {
   const AddPanne({super.key});
@@ -37,9 +44,7 @@ class _AddPanneState extends State<AddPanne> {
   Future<void> captureImageFromCamera() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
     if (pickedFile == null) return;
-    if (pickedFile != null) {
-      this.imageFile = File(pickedFile.path);
-    }
+    this.imageFile = File(pickedFile.path);
   }
 
 //initialisation et permission
@@ -102,71 +107,9 @@ class _AddPanneState extends State<AddPanne> {
     return [if (duration.inHours > 0) hours, minutes, seconds].join(':');
   }
 
-//upload Data
-  Future<void> saveDataToFirebase(
-      String text, String typePanne, Uint8List imageBytes) async {
-    try {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-      firebase_storage.FirebaseStorage storage =
-          firebase_storage.FirebaseStorage.instance;
-
-      // Upload the image to Firebase Storage
-      String imageUrl = await uploadImageToStorage(storage, imageBytes);
-
-      // Save the image URL, text, and type de panne to Firebase Firestore
-      await firestore.collection('Pannes').add({
-        'text': text,
-        'typePanne': typePanne,
-        'imageUrl': imageUrl,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-
-      // Data saved successfully
-      print('Data saved to Firebase Firestore.');
-    } catch (e) {
-      // Error occurred while saving the data
-      print('Failed to save data to Firebase Firestore: $e');
-    }
+  ajoutPanne(_text, typePanne, imageBytes) {
+    FireBaseCRUD().saveDataToFirebase(_text, typePanne, imageBytes);
   }
-
-  Future<String> uploadImageToStorage(
-      firebase_storage.FirebaseStorage storage, Uint8List imageBytes) async {
-    // Generate a unique filename for the image
-    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-
-    // Create a reference to the image file in Firebase Storage
-    firebase_storage.Reference ref =
-        storage.ref().child('images/$fileName.jpg');
-
-    // Upload the image file
-    await ref.putData(imageBytes);
-
-    // Get the download URL of the uploaded image
-    String imageUrl = await ref.getDownloadURL();
-
-    return imageUrl;
-  }
-  // void uploadData(text, imageFile, typePanne) async {
-  //   if (keyForm.currentState!.validate()) {
-  //     BDPanne _db = BDPanne();
-  //     String _ImageURL = await _db.uploadImage(imageFile);
-
-  //     _db.addPanne(Panne(
-  //       PanneImage: _ImageURL,
-  //       typePanne: typePanne,
-  //       AutioText: text,
-  //     ));
-  //     AwesomeDialog(
-  //       context: context,
-  //       dialogType: DialogType.success,
-  //       animType: AnimType.rightSlide,
-  //       title: 'Save',
-  //       desc: "Informations Saved",
-  //       btnCancelOnPress: () {},
-  //       btnOkOnPress: () {},
-  //     )..show();
-  //   }
-  // }
 
   //Page Controller
   final _cotroller = PageController();
@@ -249,9 +192,9 @@ class _AddPanneState extends State<AddPanne> {
           String textFieldData =
               _text; // Assuming _text holds the text field data
           String _typePanne = typePanne;
-          await saveDataToFirebase(textFieldData, _typePanne,
+          await ajoutPanne(textFieldData, _typePanne,
               imageBytes); // Pass the typePanne variable
-          AwesomeDialog(
+          await AwesomeDialog(
             context: context,
             dialogType: DialogType.success,
             animType: AnimType.rightSlide,
@@ -259,8 +202,15 @@ class _AddPanneState extends State<AddPanne> {
             desc: 'Informations Saved',
             btnCancelOnPress: () {},
             btnOkOnPress: () {},
-          )..show();
-          // uploadData(_text, imageFile, typePanne);
+          )
+            ..show();
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Rapport(),
+            ),
+          );
         },
         backgroundColor: Color(0xFF95af50),
         child: Icon(

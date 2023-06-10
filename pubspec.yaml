@@ -55,7 +55,7 @@ dependencies:
   microphone: ^0.1.0
   just_audio: ^0.9.33
   smooth_page_indicator: ^1.1.0
-  
+
   avatar_glow: ^2.0.2
   highlight_text: ^1.6.0
   flutter_deep_speech: ^0.0.3
@@ -100,6 +100,7 @@ flutter:
     - images/5.jpg
     - images/icon.png
     - images/logo.png
+    - images/électrique.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

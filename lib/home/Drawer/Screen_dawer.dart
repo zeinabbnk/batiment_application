@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:batiment_application/crud/infos.dart';
+import 'package:batiment_application/crud/rapportScreen.dart';
 import 'package:batiment_application/home/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,7 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               InkWell(
+                onTap: () {},
                 child: Row(
                   children: <Widget>[
                     Icon(
@@ -132,11 +134,10 @@ class _ScreenDrawerState extends State<ScreenDrawer> {
               SizedBox(
                 height: 20,
               ),
-              Elements(icon: Icons.favorite, text: "Favorite"),
             ],
           ),
           SizedBox(
-            height: 200,
+            height: 210,
           ),
           InkWell(
             onTap: () {
