@@ -195,45 +195,45 @@ class _RapportState extends State<Rapport> {
                           ),
                         ],
                       ),
-                      // Container(
-                      //   margin: EdgeInsets.symmetric(vertical: 15),
-                      //   child: Image.asset(
-                      //     'images/4.png',
-                      //     height: 80,
-                      //     width: 80,
-                      //     alignment: Alignment.center,
-                      //   ),
-                      // ),
-                      // Row(
-                      //   children: [
-                      //     Text(
-                      //       "Type de Panne :",
-                      //       style: TextStyle(
-                      //           fontWeight: FontWeight.w600, fontSize: 16),
-                      //     ),
-                      //     SizedBox(
-                      //       width: 8,
-                      //     ),
-                      //     Text("Problème Structurels"),
-                      //   ],
-                      // ),
-                      // SizedBox(
-                      //   height: 8,
-                      // ),
-                      // Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     Text("commentaire :",
-                      //         style: TextStyle(
-                      //             fontWeight: FontWeight.w600, fontSize: 16)),
-                      //     SizedBox(
-                      //       height: 8,
-                      //     ),
-                      //     Text(
-                      //       "Il est crucial de détecter rapidement les problèmes structurels afin d'assurer la sécurité et l'intégrité du bâtiment.",
-                      //     ),
-                      //   ],
-                      // ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 15),
+                        child: Image.asset(
+                          'images/mur.jpg',
+                          height: 150,
+                          width: 180,
+                          alignment: Alignment.center,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "Type de Panne :",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 16),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text("Problème Structurel"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("commentaire :",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 16)),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            "j'ai détecté une autre panne sur le mur dans l'étage 2.",
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ],

@@ -100,7 +100,9 @@ class _infoHomeState extends State<infoHome> {
               )
             ],
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Positioned(
             top: 120,
             child: Container(
